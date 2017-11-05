@@ -12,6 +12,12 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    //设置语言
+    'language'=>'zh-CN',
+    //设置布局文件
+//    layout=>false,
+    //默认路由
+    'defaultRoute'=>'brand/list',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -37,14 +43,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'enablePrettyUrl' => true,//开启网址美化
+            'showScriptName' => false,//是否显示脚本文件index.php
+            //后缀
+            'suffix'=>'.html',
             'rules' => [
+                //'zhangsan'=>'student/add'
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
