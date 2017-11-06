@@ -28,6 +28,8 @@ class ArticleCategoryController extends Controller
         $request = new Request();
         if ($request->isPost){
             $model->load($request->post());
+            //文本框过滤
+            $model->intro = htmlspecialchars($model->intro);
             if ($model->validate()){
                 $model->save();
                 \Yii::$app->session->setFlash('success','添加成功');
@@ -43,6 +45,8 @@ class ArticleCategoryController extends Controller
         if ($request->isPost){
             //加载表单提交的数据
             $model->load($request->post());
+            //文本框过滤
+            $model->intro = htmlspecialchars($model->intro);
             //验证数据
             if ($model->validate()){
                 //将提交的分类信息保存数据库

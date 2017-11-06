@@ -4,5 +4,4 @@
     <div>
         <p><?=$content['content']?></p>
     </div>
-
 </div>

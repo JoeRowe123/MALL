@@ -34,8 +34,23 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    //菜单栏
     $menuItems = [
         ['label' => 'Home', 'url' => ['/manager/list']],
+        ['label'=>'商品管理','items'=>[
+                ['label'=>'商品分类列表','url'=>['/goods-category/list']],
+                ['label'=>'添加商品分类','url'=>['/goods-category/add-category']],
+        ]],
+        ['label'=>'品牌管理','items'=>[
+            ['label'=>'商品分类列表','url'=>['/brand/list']],
+            ['label'=>'品牌添加','url'=>['/brand/add-brand']],
+        ]],
+        ['label'=>'文章管理','items'=>[
+            ['label'=>'文章分类列表','url'=>['/article-category/list']],
+            ['label'=>'添加文章分类','url'=>['/article-category/add']],
+            ['label'=>'文章列表','url'=>['/article/list']],
+            ['label'=>'添加文章','url'=>['/article/add']],
+        ]],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/manager/login']];

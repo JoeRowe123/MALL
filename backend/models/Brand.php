@@ -7,6 +7,13 @@ class Brand extends ActiveRecord
 {
     //保存logo信息属性
     public $logoFile;
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'brand';
+    }
     //标签名称
     public function attributeLabels(){
         return [
@@ -21,11 +28,11 @@ class Brand extends ActiveRecord
     public function rules(){
         return [
             //不为空
-          [['name','status','intro'],'required'],
-            //数据安全
-          [['intro','status','sort'],'safe'],
-            //验证上传文件后缀名
-          ['logoFile','file','extensions'=>['jpg','png','gif'],'skipOnEmpty'=>false],
+            [['name','sort','intro','logo'],'required'],
+            [['intro'], 'string'],
+            [['sort', 'status'], 'integer'],
+            [['name'], 'string', 'max' => 50],
+            [['logo'], 'string', 'max' => 255],
         ];
     }
 }

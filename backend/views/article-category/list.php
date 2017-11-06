@@ -1,5 +1,4 @@
 <div class="container">
-    <p><a href="/article-category/add.html" class="btn btn-primary">添加</a></p>
     <table class="table table-hover">
         <tr class="info">
             <th>文章分类</th>
@@ -32,7 +31,7 @@
                 var tr = $(this).closest('tr');
                 $.get('/article-category/delete.html',{'id':$(this).attr('id')},function (data) {
                     if (data==1){
-                        tr.slideUp();
+                        tr.fadeOut();
                     }else {
                         alert(data);
                     }

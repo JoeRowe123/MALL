@@ -41,16 +41,20 @@ class ArticleController extends Controller
         if ($request->isPost){
             //获取表单提交的数据
             $article->load($request->post());
+            //文本框过滤
+            $model->intro = htmlspecialchars($model->intro);
             //验证
             if ($article->validate()){
+                //确认添加时间
+                $article->create_time = time();
                 //将文章内容保存到详情表中
                 $detail->content = $article->content;
                 //获取添加到文章表的id
-                $id = \Yii::$app->db->getLastInsertID();
-                //让文章表id与详情表id统一
-                $detail->article_id = $id;
+//                $id = \Yii::$app->db->getLastInsertID();
                 //将字段分表保存到表中
                 $article->save();
+                //让文章表id与详情表id统一
+                $detail->article_id = $article->id;
                 $detail->save();
                 \Yii::$app->session->setFlash('success','添加成功');
                 return $this->redirect('list.html');
@@ -76,12 +80,14 @@ class ArticleController extends Controller
         if ($request->isPost){
             //获取表单提交的数据
             $article->load($request->post());
+            //文本框过滤
+            $model->intro = htmlspecialchars($model->intro);
             //验证
             if ($article->validate()){
                 //将文章内容保存到详情表中
                 $detail->content = $article->content;
                 //获取添加到文章表的id
-                $id = \Yii::$app->db->getLastInsertID();
+//                $id = \Yii::$app->db->getLastInsertID();
                 //让文章表id与详情表id统一
                 $detail->article_id = $id;
                 //将字段分表保存到表中

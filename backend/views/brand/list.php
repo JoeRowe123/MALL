@@ -1,5 +1,4 @@
 <div class="container">
-    <p><a href="/brand/add-brand.html" class="btn btn-primary">添加</a></p>
     <table class="table table-hover">
         <tr class="info">
             <th>品牌</th>
@@ -14,7 +13,7 @@
                 <td><img src="<?=$v->logo?>" width="70px" alt=""></td>
                 <td><?=$v->status==1?'正常':'隐藏'?></td>
                 <td><?=$v->intro?></td>
-                <td><a href="edit-brand.html?id=<?=$v->id?>" class="btn btn-success btn-xs">编辑</a>&emsp;
+                <td><a href="/brand/edit-brand.html?id=<?=$v->id?>" class="btn btn-success btn-xs">编辑</a>&emsp;
                     <button id="<?=$v->id?>" class="btn btn-danger btn-xs">删除</button>
                 </td>
             </tr>
@@ -34,7 +33,7 @@
                 var tr = $(this).closest('tr');
                 $.get('delete-brand.html',{'id':$(this).attr('id')},function (data) {
                     if (data==1){
-                        tr.slideUp();
+                        tr.fadeOut();
                     }else {
                         alert(data);
                     }

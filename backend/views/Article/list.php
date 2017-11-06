@@ -1,11 +1,11 @@
 <div class="container">
-    <p><a href="/article/add.html" class="btn btn-primary">添加</a></p>
     <table class="table table-hover">
         <tr class="info">
             <th>标题</th>
             <th>分类</th>
             <th>状态</th>
             <th>简介</th>
+            <th>添加时间</th>
             <th>操作</th>
         </tr>
         <?php foreach ($model as $v):?>
@@ -14,6 +14,7 @@
                 <td><?=$v->category->name?></td>
                 <td><?=$v->status==1?'正常':'隐藏'?></td>
                 <td><?=$v->intro?></td>
+                <td><?=date('Y-m-d H:i:s',$v->create_time)?></td>
                 <td><a href="/article/show.html?id=<?=$v->id?>" class="btn btn-warning btn-xs">查看</a>&emsp;
                     <a href="/article/edit.html?id=<?=$v->id?>" class="btn btn-success btn-xs">编辑</a>&emsp;
                     <button id="<?=$v->id?>" class="btn btn-danger btn-xs">删除</button>
