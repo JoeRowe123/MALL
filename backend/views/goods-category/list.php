@@ -1,6 +1,6 @@
 <div class="container">
     <table class="table table-hover">
-        <tr>
+        <tr class="info">
             <th>名字</th>
             <th>上级分类</th>
             <th>简介</th>
@@ -8,7 +8,7 @@
         </tr>
         <?php foreach ($model as $v):?>
             <tr>
-                <td><?=$v->name?></td>
+                <td><?=str_repeat('&emsp;',$v->depth*2).$v->name?></td>
                 <td><?=$v->parent_id==0?'顶级分类':$v->category->name?></td>
                 <td><?=$v->intro?></td>
                 <td>

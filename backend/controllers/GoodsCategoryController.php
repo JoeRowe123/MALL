@@ -9,6 +9,7 @@
 namespace backend\controllers;
 
 use backend\models\GoodsCategory;
+use creocoder\nestedsets\NestedSetsBehavior;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\Request;
@@ -28,7 +29,8 @@ class GoodsCategoryController extends Controller
         //设置每页显示条数
         $pager->pageSize = 6;
         //按分页条件查询数据
-        $model = $query->limit($query->limit)->offset($query->offset)->all();
+        $model = $query->limit($query->limit)->offset($query->offset)->orderBy(['tree'=>'ASC','lft'=>'ASC'])->all();
+
         //将数据分配到视图，并显示
         return $this->render('list',['model'=>$model,'pager'=>$pager]);
     }
@@ -79,8 +81,12 @@ class GoodsCategoryController extends Controller
             $model->intro = htmlspecialchars($model->intro);
             if ($model->validate()){
                 if ($model->parent_id==0){
-                    //创建根节点,nested-set中的保存方式
-                    $model->makeRoot();//该方法来自行为注入的组件
+                    if ($model->getOldAttribute('parent_id')==0){
+                        $model->save();
+                    }else{
+                        $model->makeRoot();//该方法来自行为注入的组件
+                    }
+
                 }else{
                     //创建子节点
 //                    $newZeeland = new Menu(['name' => 'New Zeeland']);
@@ -99,8 +105,20 @@ class GoodsCategoryController extends Controller
     public function actionDelete($id){
         $category = GoodsCategory::findOne(['id'=>$id]);
         if($category){
-            $category->delete();
-            echo json_encode(1);
+            //叶节点左右id相差1
+            $v = $category->rgt - $category->lft;
+            //页节点可删除
+            if ($v==1){
+                //不为跟
+                if ($category->parent_id!=0){
+                    $category->delete();
+                }else{
+                    $category->deleteWithChildren();//该方法可以删除根节点
+                }
+                echo json_encode(1);
+            }else{
+                echo '该分类还有产品，不能删除';
+            }
         }else{
             return '记录不存在，或已被删除！';
         }

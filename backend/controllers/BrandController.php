@@ -15,6 +15,7 @@ use Qiniu\Storage\UploadManager;
 
 class BrandController extends Controller
 {
+    //允许图片上传
     public $enableCsrfValidation = false;
     //展示品牌列表
     public function actionList(){

@@ -42,7 +42,7 @@ class ArticleController extends Controller
             //获取表单提交的数据
             $article->load($request->post());
             //文本框过滤
-            $model->intro = htmlspecialchars($model->intro);
+            $article->intro = htmlspecialchars($article->intro);
             //验证
             if ($article->validate()){
                 //确认添加时间
@@ -81,7 +81,7 @@ class ArticleController extends Controller
             //获取表单提交的数据
             $article->load($request->post());
             //文本框过滤
-            $model->intro = htmlspecialchars($model->intro);
+            $article->intro = htmlspecialchars($article->intro);
             //验证
             if ($article->validate()){
                 //将文章内容保存到详情表中

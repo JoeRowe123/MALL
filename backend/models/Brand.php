@@ -2,6 +2,7 @@
 namespace backend\models;
 
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 class Brand extends ActiveRecord
 {
@@ -34,5 +35,9 @@ class Brand extends ActiveRecord
             [['name'], 'string', 'max' => 50],
             [['logo'], 'string', 'max' => 255],
         ];
+    }
+    //获取品牌id对应的名称的数组
+    public static function getItems(){
+        return ArrayHelper::map(self::find()->asArray()->all(),'id','name');
     }
 }

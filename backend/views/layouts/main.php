@@ -40,6 +40,8 @@ AppAsset::register($this);
         ['label'=>'商品管理','items'=>[
                 ['label'=>'商品分类列表','url'=>['/goods-category/list']],
                 ['label'=>'添加商品分类','url'=>['/goods-category/add-category']],
+                ['label'=>'商品列表','url'=>['/goods/list']],
+                ['label'=>'添加商品','url'=>['/goods/add-goods']],
         ]],
         ['label'=>'品牌管理','items'=>[
             ['label'=>'商品分类列表','url'=>['/brand/list']],
