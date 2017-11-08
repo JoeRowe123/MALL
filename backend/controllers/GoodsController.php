@@ -24,9 +24,9 @@ class GoodsController extends Controller
     public $enableCsrfValidation = false;
     public function actionList(){
         $conditions = [];
+        $serch = \Yii::$app->request->get('search');
         //判断搜索是否有值传送
-        if (isset($_GET['search'])){
-            $serch = $_GET['search'];
+        if (isset($serch)){
             $conditions["name"] = isset($serch['name'])?$serch['name']:'';
             $conditions["sn"] = isset($serch['sn'])?$serch['sn']:'';
             $conditions["min"] = isset($serch['min'])?$serch['min']:0;
@@ -47,7 +47,7 @@ class GoodsController extends Controller
         //设置每页显示条数
         $pager->pageSize = 5;
         //按分页条件查询数据
-        $model = $query->limit($query->limit)->offset($query->offset)->all();
+        $model = $query->limit($pager->limit)->offset($pager->offset)->all();
         //自动添加货号
         //将数据分配到视图，并显示
         return $this->render('list',['model'=>$model,'pager'=>$pager]);
@@ -215,6 +215,11 @@ class GoodsController extends Controller
             }
         }
     }
+
+    /**
+     * UEditor配置
+     * @return array
+     */
     public function actions()
     {
         return [

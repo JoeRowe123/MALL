@@ -43,11 +43,13 @@ uploader.on( 'uploadSuccess',function( file ,response) {
 $("table").on("click","tr button",function() {
     var tr = $(this).closest("tr");
     $.post("/goods/delete-gallery.html",{"id":tr.attr('id')},function(data) {
-        if (data==1){
-            tr.fadeOut();
-        }else {
-            alert(data);
-        }
+        if (confirm('确认删除？')){
+            if (data==1){
+                tr.fadeOut();
+            }else {
+                alert(data);
+            }
+        } 
     })
 })
 

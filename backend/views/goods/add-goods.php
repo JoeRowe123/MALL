@@ -111,7 +111,7 @@ JS
 
 <?php
 echo $form->field($model,'is_on_sale',['inline'=>1])->radioList([1=>'在售',0=>'下架']);
-echo $form->field($model,'status',['inline'=>1])->radioList([1=>'正常',0=>'回收站']);
+//echo $form->field($model,'status',['inline'=>1])->radioList([1=>'正常',0=>'回收站']);
 echo $form->field($model,'market_price')->textInput();
 echo $form->field($model,'shop_price')->textInput();
 echo $form->field($model,'stock')->textInput();
