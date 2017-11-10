@@ -18,7 +18,7 @@ class ArticleCategoryController extends Controller
         //设置每页显示条数
         $pager->pageSize = 6;
         //按分页条件查询数据
-        $model = $query->limit($query->limit)->offset($query->offset)->all();
+        $model = $query->limit($pager->limit)->offset($pager->offset)->all();
         //将数据分配到视图，并显示
 //        var_dump($model);die;
         return $this->render('/article-category/list',['model'=>$model,'pager'=>$pager]);

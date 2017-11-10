@@ -41,6 +41,12 @@ AppAsset::register($this);
             ['label'=>'管理员列表','url'=>['/user/list']],
             ['label'=>'添加管理员','url'=>['/user/add']],
         ]],
+        ['label'=>'管理员权限管理','items'=>[
+            ['label'=>'权限列表','url'=>[\yii\helpers\Url::to('/auth/permission-list')]],
+            ['label'=>'添加权限','url'=>[\yii\helpers\Url::to('/auth/add-permission')]],
+            ['label'=>'角色列表','url'=>[\yii\helpers\Url::to('/auth/role-list')]],
+            ['label'=>'添加角色','url'=>[\yii\helpers\Url::to('/auth/add-role')]],
+        ]],
         ['label'=>'商品管理','items'=>[
                 ['label'=>'商品分类列表','url'=>['/goods-category/list']],
                 ['label'=>'添加商品分类','url'=>['/goods-category/add-category']],
@@ -57,7 +63,7 @@ AppAsset::register($this);
             ['label'=>'文章列表','url'=>['/article/list']],
             ['label'=>'添加文章','url'=>['/article/add']],
         ]],
-        ['label'=>'修改密码','url'=>[\yii\helpers\Url::to('/user/update')]],
+        ['label'=>'修改密码','url'=>[\yii\helpers\Url::to('/user/update-pwd')]],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '登录', 'url' => ['/user/login']];

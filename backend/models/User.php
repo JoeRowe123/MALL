@@ -15,10 +15,13 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $role;
     public function rules(){
         return [
-            [['username','email','password_hash','status','created_at'],'required'],
+            [['username','email','created_at'],'required'],
+            [['username','email'],'unique'],
             ['email','email'],
+            [['status','role'],'safe'],
             [['password_hash'], 'string', 'max' => 100],
         ];
     }
@@ -28,6 +31,7 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash'=>'密码',
             'email'=>'邮箱',
             'status'=>'状态',
+            'role'=>'角色',
         ];
     }
     //自动更新时间当记录插入时，行为将当前时间戳赋值给 created_at 和 updated_at 属性；
@@ -107,6 +111,6 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->auth_key == $authKey;
+        return $this->getAuthKey() === $authKey;
     }
 }
