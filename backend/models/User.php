@@ -34,6 +34,32 @@ class User extends ActiveRecord implements IdentityInterface
             'role'=>'角色',
         ];
     }
+    //菜单栏
+    public function getMenu(){
+        $menuItems = [];
+        //查询出所有一级菜单
+        $menus = Menu::find()->where(['parent'=>0])->all();
+        //将一级分类放入$menuItems中
+
+        foreach ($menus as $menu){
+            $items = [];
+            //将所有二级菜单放入items中
+            foreach ($menu->children as $child){
+//                var_dump($child);die;
+                //根据权限将二级菜单放入一级菜单中
+                if (\Yii::$app->user->can($child->url)){
+                    $items[] = ['label'=>$child->name,'url'=>$child->url.'.html'];
+                }
+            }
+            $menuItem = ['label'=>$menu->name,'items'=>$items];
+//            var_dump($menuItem);die;
+            //根据二级菜单权限将一级菜单放入主菜单中
+            if ($menuItem['items']!=[]){
+                $menuItems[] = $menuItem;
+            }
+        }
+        return $menuItems;
+    }
     //自动更新时间当记录插入时，行为将当前时间戳赋值给 created_at 和 updated_at 属性；
     //当记录更新时，行为将当前时间戳赋值给 updated_at 属性。
     public function behaviors()

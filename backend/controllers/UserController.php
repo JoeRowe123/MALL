@@ -11,6 +11,7 @@ namespace backend\controllers;
 use backend\models\LoginForm;
 use backend\models\PasswordForm;
 use backend\models\User;
+use frontend\filters\RbacFilter;
 use yii\captcha\CaptchaAction;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
@@ -67,12 +68,12 @@ class UserController extends Controller
                 \Yii::$app->session->setFlash('success','添加成功');
                 return $this->redirect(Url::to('list.html'));
             }else{
-                var_dump($model->getErrors());exit;
+//                var_dump($model->getErrors());exit;
             }
         }
         //获取所有角色
         $roles = $auth->getRoles();
-        $roles = ArrayHelper::map($roles,'name','description');
+        $roles = ArrayHelper::map($roles,'name','name');
         //显示视图
         return $this->render('add',['model'=>$model,'roles'=>$roles]);
 
@@ -110,6 +111,7 @@ class UserController extends Controller
                 //删除用户拥有的角色
                 $auth->revokeAll($id);
                 //给用户分配角色
+                $model->role = $model->role==''?[]:$model->role;
                 foreach ($model->role as $roleName){
                     //根据角色名称获取角色对象
                     $role = $auth->getRole($roleName);
@@ -118,7 +120,7 @@ class UserController extends Controller
                 \Yii::$app->session->setFlash('success','修改成功');
                 return $this->redirect('list.html');
             }else{
-                var_dump($model->getErrors());exit;
+//                var_dump($model->getErrors());exit;
             }
         }
         //根据用户名获取拥有的角色
@@ -130,7 +132,7 @@ class UserController extends Controller
         }
         //获取所有角色
         $roles = $auth->getRoles();
-        $roles = ArrayHelper::map($roles,'name','description');
+        $roles = ArrayHelper::map($roles,'name','name');
         //显示视图
         return $this->render('add',['model'=>$model,'roles'=>$roles]);
     }
@@ -219,22 +221,11 @@ class UserController extends Controller
      */
     public function behaviors(){
         return [
-            'acf'=>[
-                'class'=>AccessControl::className(),
-                'only'=>['list','password','add'],
-                'rules'=>[
-                    [
-                        'allow'=>true,//允许
-//                        'actions'=>['/user/list','/user/add'],
-                        'roles'=>['@'],//角色 ?未登录 @已登录
-                    ],
-                    [
-                        'allow'=>true,
-                        'actions'=>['/user/list','/user/add','/user/delete'],
-                        'matchCallback'=>function(){
-                            return \Yii::$app->user->identity->username=='admin';
-                        }
-                    ]
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['list','updatePwd','add'],
+                'except'=>[
+
                 ]
             ]
         ];

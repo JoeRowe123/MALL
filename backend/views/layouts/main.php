@@ -57,6 +57,10 @@ AppAsset::register($this);
             ['label'=>'商品分类列表','url'=>['/brand/list']],
             ['label'=>'品牌添加','url'=>['/brand/add-brand']],
         ]],
+        ['label'=>'菜单管理','items'=>[
+            ['label'=>'商品分类列表','url'=>['/menu/list']],
+            ['label'=>'菜单添加','url'=>['/menu/add']],
+        ]],
         ['label'=>'文章管理','items'=>[
             ['label'=>'文章分类列表','url'=>['/article-category/list']],
             ['label'=>'添加文章分类','url'=>['/article-category/add']],
@@ -66,8 +70,12 @@ AppAsset::register($this);
         ['label'=>'修改密码','url'=>[\yii\helpers\Url::to('/user/update-pwd')]],
     ];
     if (Yii::$app->user->isGuest) {
+        $menuItems = [
+                //访客模式展示菜单
+        ];
         $menuItems[] = ['label' => '登录', 'url' => ['/user/login']];
     } else {
+        $menuItems = Yii::$app->user->identity->Menu;
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

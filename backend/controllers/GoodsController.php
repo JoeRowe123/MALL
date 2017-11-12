@@ -145,6 +145,19 @@ class GoodsController extends Controller
     }
 
     /**
+     * 删除商品
+     * @param $id
+     */
+    public function actionDelete($id){
+        $result= Goods::updateAll(['status'=>0],['id'=>$id]);
+        if ($result){
+            echo 1;
+        }else{
+            echo '商品不存在，或已被删除！';
+        }
+    }
+
+    /**
      * 相册展示
      * @return string
      */
@@ -186,14 +199,7 @@ class GoodsController extends Controller
             echo "图片不存在";
         }
     }
-    public function actionDelete($id){
-        $result= Goods::updateAll(['status'=>0],['id'=>$id]);
-        if ($result){
-            echo 1;
-        }else{
-            echo '商品不存在，或已被删除！';
-        }
-    }
+
     /**
      * 文件上传
      * @return string 文件路径

@@ -5,16 +5,14 @@
  * Date: 2017/11/9
  * Time: 10:34
  */
-
 namespace backend\controllers;
-
 use backend\models\PermissionForm;
 use backend\models\RoleForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Request;
-
 class AuthController extends Controller
 {
     /**
@@ -28,7 +26,6 @@ class AuthController extends Controller
         //分配视图显示
         return $this->render('permission_list',['model'=>$model]);
     }
-
     /**
      * 新增权限
      * @return string|\yii\web\Response
@@ -37,6 +34,8 @@ class AuthController extends Controller
         $auth = \Yii::$app->authManager;
         $request = new Request();
         $model = new PermissionForm();
+        //声明场景
+        $model->scenario = PermissionForm::SCENARIO_ADD;
         if ($request->isPost){
             //接收表单提交的数据
             $model->load($request->post());
@@ -51,7 +50,7 @@ class AuthController extends Controller
                 \Yii::$app->session->setFlash('success','新增权限成功');
                 return $this->redirect('permission-list.html');
             }else{
-                var_dump($model->getErrors());exit;
+//                var_dump($model->getErrors());exit;
             }
         }
         //显示添加权限表单
@@ -61,32 +60,34 @@ class AuthController extends Controller
     /**
      * 修改权限
      * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionEditPermission(){
         $name = \Yii::$app->request->get('name');
         $auth = \Yii::$app->authManager;
         $permission = $auth->getPermission($name);
+        //若权限不存在则抛出404错误
+        if ($permission==null){
+            throw new NotFoundHttpException('权限不存在');
+        }
         $model = new PermissionForm();
+        //声明场景
+        $model->scenario = PermissionForm::SCENARIO_EDIT;
+        //获取旧的权限名
+        $model->old_name = $name;
         $request = new Request();
+        //回显权限
         $model->name = $permission->name;
         $model->description = $permission->description;
         if($request->isPost){
             $model->load($request->post());
-            if ($model->validate()){
+            if ($model->validate()&&$model->update($name)){
                 //验证通过
-                //删除权限再添加权限
-                $auth->remove($permission);
-                //根据名字创建新的权限
-                $new_permission = $auth->createPermission($model->name);
-                $new_permission->description = $model->description;
-//                var_dump($new_permission);die;
-                //添加新权限
-                $auth->add($new_permission);
                 //跳转列表页
                 \Yii::$app->session->setFlash('success','修改权限成功');
                 return $this->redirect('permission-list.html');
             }else{
-                var_dump($model->getErrors());exit;
+//                var_dump($model->getErrors());exit;
             }
         }
         //显示修改表单
@@ -106,7 +107,6 @@ class AuthController extends Controller
             echo '权限不存在，或已经删除！';
         }
     }
-
     /**
      * 角色管理
      */
@@ -117,7 +117,6 @@ class AuthController extends Controller
         //展示角色列表
         return $this->render('role_list',['model'=>$model]);
     }
-
     /**
      * 添加角色
      * @return string|\yii\web\Response
@@ -126,6 +125,8 @@ class AuthController extends Controller
         $auth = \Yii::$app->authManager;
         $request = new Request();
         $model = new RoleForm();
+        //声明场景
+        $model->scenario = RoleForm::SCENARIO_ADD;
         if ($request->isPost){
             //获取表单提交的数据
             $model->load($request->post());
@@ -146,7 +147,7 @@ class AuthController extends Controller
                 \Yii::$app->session->setFlash('success','添加角色成功');
                 return $this->redirect(Url::to('/auth/role-list.html'));
             }else{
-                var_dump($model->getErrors());exit;
+//                var_dump($model->getErrors());exit;
             }
         }
         //获取所有权限并展示在角色表单中
@@ -154,7 +155,6 @@ class AuthController extends Controller
         $permissions = ArrayHelper::map($permissions,'name','description');
         return $this->render('add_Role',['model'=>$model,'permissions'=>$permissions]);
     }
-
     /**
      * 修改角色
      * @param $name
@@ -163,6 +163,9 @@ class AuthController extends Controller
     public function actionEditRole($name){
         $auth = \Yii::$app->authManager;
         $model = new RoleForm();
+        //声明场景
+        $model->scenario = RoleForm::SCENARIO_EDIT;
+        $model->old_name = $name;
         $request = new Request();
         //根据角色名获取角色对象
         $role = $auth->getRole($name);
@@ -179,27 +182,12 @@ class AuthController extends Controller
         if($request->isPost){
             //获取表单提交的数据
             $model->load($request->post());
-            if ($model->validate()){
-                //验证通过
-                //删除角色
-                $auth->remove($role);
-                //重写添加角色
-                $new_role = $auth->createRole($model->name);
-                $new_role->description = $model->description;
-                //保存角色
-                $auth->add($new_role);
-                //给角色分配权限
-                foreach ($model->permissions as $permissionName){
-                    //根据权限名获取权限对象
-                    $permission = $auth->getPermission($permissionName);
-                    //给角色添加权限
-                    $auth->addChild($new_role,$permission);
-                }
-                //添加完成，跳转角色列表
-                \Yii::$app->session->setFlash('success','添加角色成功');
+            if ($model->validate()&&$model->update($name)){
+                //验证通过,跳转角色列表
+                \Yii::$app->session->setFlash('success','修改角色成功');
                 return $this->redirect(Url::to('/auth/role-list.html'));
             }else{
-                var_dump($model->getErrors());exit;
+//                var_dump($model->getErrors());exit;
             }
         }
         $permissions = $auth->getPermissions();
