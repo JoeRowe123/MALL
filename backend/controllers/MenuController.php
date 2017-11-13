@@ -75,4 +75,14 @@ class MenuController extends Controller
         }
         return $this->render('add',['model'=>$model,'permissions'=>$permissions]);
     }
+
+    public function actionDelete($id){
+        $menu = Menu::findOne(['id'=>$id]);
+        if ($menu){
+            $menu->delete();
+            echo 1;
+        }else{
+            echo '菜单不存在，或已经被删除';
+        }
+    }
 }

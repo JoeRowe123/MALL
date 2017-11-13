@@ -11,10 +11,9 @@ namespace backend\controllers;
 use backend\models\LoginForm;
 use backend\models\PasswordForm;
 use backend\models\User;
+
 use frontend\filters\RbacFilter;
-use yii\captcha\CaptchaAction;
 use yii\data\Pagination;
-use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -223,9 +222,9 @@ class UserController extends Controller
         return [
             'rbac'=>[
                 'class'=>RbacFilter::className(),
-                'only'=>['list','updatePwd','add'],
+                'only'=>['updatePwd','add','login','delete'],
                 'except'=>[
-
+                    'list','delete','edit','login'
                 ]
             ]
         ];

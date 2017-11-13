@@ -38,9 +38,9 @@ $this->registerJsFile('@web/DataTables/js/jquery.dataTables.js',[
         $("table").on('click','tr button',function () {
             if(confirm('是否删除角色？')){
                 var td=$(this).closest('tr');
-                $.get('<?=\yii\helpers\Url::to('delete-role.html')?>',{'name':$(this).attr('id')},function (data) {
+                $.get('<?=\yii\helpers\Url::to(['delete'])?>',{'id':$(this).attr('id')},function (data) {
                     if (data==1){
-                        $(td).remove();
+                        $(td).fadeOut();
                     }else {
                         alert(data);
                     }
