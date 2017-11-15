@@ -17,7 +17,7 @@ return [
     //设置布局文件
     'layout'=>false,
     //默认路由
-    'defaultRoute'=>'member/login',
+    'defaultRoute'=>'goods/index',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [

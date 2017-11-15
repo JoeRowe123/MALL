@@ -18,7 +18,7 @@ class m171112_060145_create_member_table extends Migration
             'auth_key'=>$this->string(32)->notNull()->comment('密钥'),
             'password_hash'=>$this->string(100)->notNull()->comment('密码'),
             'email'=>$this->string(100)->notNull()->comment('邮箱'),
-            'tel'=>$this->integer(11)->notNull()->comment('电话'),
+            'tel'=>$this->char(11)->notNull()->comment('电话'),
             'last_login_time'=>$this->integer()->notNull()->comment('最后登录时间'),
             'last_login_ip'=>$this->integer()->notNull()->comment('最后登录ip'),
             'status'=>$this->integer(1)->notNull()->comment('状态'),

@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="/css/header.css" type="text/css">
     <link rel="stylesheet" href="/css/login.css" type="text/css">
     <link rel="stylesheet" href="/css/footer.css" type="text/css">
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
 <!--    <script src="/js/jquery.js"></script>-->
 <!--    <script src="/js/jquery.validate.min.js"></script>-->
     <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
@@ -27,7 +32,6 @@
                 <li>我的订单</li>
                 <li class="line">|</li>
                 <li>客户服务</li>
-
             </ul>
         </div>
     </div>
@@ -178,6 +182,9 @@
 //                    minlength: 5,
                     equalTo: "#password_hash"
                 },
+                tel: {
+                    required: true,
+                },
                 email: {
                     required: true,
                     email: true
@@ -205,8 +212,10 @@
 //                    minlength: "密码长度不能小于 5 个字母",
                     equalTo: "两次密码输入不一致"
                 },
+                tel: {
+                    required: "请输入电话号码",
+                },
                 email: "请输入一个正确的邮箱",
-
             },
             //设置错误信息的标签
             errorElement:'span'

@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 
 use frontend\components\Sms;
+use frontend\models\Address;
 use frontend\models\LoginForm;
 use frontend\models\Member;
 use yii\helpers\Url;
@@ -28,7 +29,7 @@ class MemberController extends Controller
                 //验证用户信息及密码是否正确
                 if ($model->login()){
                     //验证通过，跳转列表页
-                    return $this->redirect(Url::to(['member/index']));
+                    return $this->redirect(Url::to(['goods/index']));
                 }
             }else{
                 var_dump($model->getErrors());exit;
@@ -52,8 +53,9 @@ class MemberController extends Controller
             //加密密码
             $model->password_hash = \Yii::$app->security->generatePasswordHash($model->password_hash);
             if ($model->validate()){
+//                var_dump($model);die;
                 $model->save(false);
-                return $this->redirect(Url::to(['member/index']));
+                return $this->redirect(Url::to(['goods/index']));
             }else{
                 var_dump($model->getErrors());die;
             }
@@ -61,6 +63,12 @@ class MemberController extends Controller
         return $this->render('sign_up');
     }
 
+    public function actionLogout(){
+        //退出登录
+        \Yii::$app->user->logout();
+        //跳转页面
+        return $this->redirect(Url::to(['member/login']));
+    }
     /**
      * 短信验证码
      */
@@ -115,7 +123,86 @@ class MemberController extends Controller
         return 'true';
     }
 
-    public function actionIndex(){
-        echo '首页';
+    /**
+     * 添加地址
+     * @return string|\yii\web\Response
+     */
+    public function actionAddress(){
+        $model = new Address();
+        $request = \Yii::$app->request;
+        //获取当前登录用户的id
+        $model->member_id = \Yii::$app->user->id;
+        if ($request->isPost){
+            $model->load($request->post(),'');
+            $model->status = $model->status?1:0;
+            //若新增地址为默认地址则之前默认地址状态改为0
+            if ($model->status == 1){
+                Address::updateAll(['status'=>0],['status'=>1]);
+            }
+            if ($model->validate()){
+                //验证通过保存数据库
+                $model->save();
+                //返回页面
+                return $this->redirect(Url::to(['member/address']));
+            }else{
+                var_dump($model->getErrors());die;
+            }
+        }
+        $address = Address::find()->where(['member_id'=>$model->member_id])->asArray()->all();
+        return $this->render('address',['address'=>$address,'model'=>$model]);
+    }
+
+    /**
+     * 删除地址
+     * @param $id
+     */
+    public function actionDeleteAddress($id){
+        $address = Address::findOne(['id'=>$id]);
+        if ($address){
+            $address->delete();
+            echo "success";
+        }else{
+            echo "地址不存在，或已被删除";
+        }
+    }
+
+    /**
+     * 设置默认地址
+     * @param $id
+     * @return \yii\web\Response
+     */
+    public function actionStatus($id){
+        Address::updateAll(['status'=>0],['status'=>1]);
+        Address::updateAll(['status'=>1],['id'=>$id]);
+        return $this->redirect(Url::to(['member/address']));
+    }
+
+    /**
+     * 修改地址
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionUpdateAddress($id){
+        $model = Address::findOne(['id'=>$id]);
+        $request = \Yii::$app->request;
+        if ($request->isPost){
+            $model->load($request->post(),'');
+            $model->status = $model->status?1:0;
+            //若新增地址为默认地址则之前默认地址状态改为0
+            if ($model->status == 1){
+                Address::updateAll(['status'=>0],['status'=>1]);
+            }
+            if ($model->validate()){
+                //验证通过保存数据库
+                $model->save();
+                //返回页面
+                return $this->redirect(Url::to(['member/address']));
+            }else{
+                var_dump($model->getErrors());die;
+            }
+        }
+        $address = Address::find()->where(['member_id'=>$model->member_id])->asArray()->all();
+//        var_dump($model);die;
+        return $this->render('address',['address'=>$address,'model'=>$model]);
     }
 }

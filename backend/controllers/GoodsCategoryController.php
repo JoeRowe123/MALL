@@ -9,6 +9,7 @@
 namespace backend\controllers;
 
 use backend\models\GoodsCategory;
+use Codeception\Module\Redis;
 use creocoder\nestedsets\NestedSetsBehavior;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -39,6 +40,8 @@ class GoodsCategoryController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionAddCategory(){
+        $redis = new Redis();
+        $redis->connect('127.0.0.1');
         $model = new GoodsCategory();
         //设置默认parent_id,不设置分类无法显示（修改表单需要父节点id）
         $model->parent_id = 0;
@@ -51,6 +54,7 @@ class GoodsCategoryController extends Controller
                 if ($model->parent_id==0){
                     //创建根节点,nested-set中的保存方式
                     $model->makeRoot();//该方法来自行为注入的组件
+                    $redis->delete('goods-category');
                 }else{
                     //创建子节点
 //                    $newZeeland = new Menu(['name' => 'New Zeeland']);
@@ -59,6 +63,7 @@ class GoodsCategoryController extends Controller
                     $parent = GoodsCategory::findOne(['id'=>$model->parent_id]);
                     //添加子节点
                     $model->prependTo($parent);
+                    $redis->delete('goods-category');
                 }
                 return $this->redirect('list.html');
             }
@@ -72,6 +77,8 @@ class GoodsCategoryController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionEdit($id){
+        $redis = new Redis();
+        $redis->connect('127.0.0.1');
         $model = GoodsCategory::findOne(['id'=>$id]);
         $request = \Yii::$app->request;
         if ($request->isPost){
@@ -82,8 +89,10 @@ class GoodsCategoryController extends Controller
                 if ($model->parent_id==0){
                     if ($model->getOldAttribute('parent_id')==0){
                         $model->save();
+                        $redis->delete('goods-category');
                     }else{
                         $model->makeRoot();//该方法来自行为注入的组件
+                        $redis->delete('goods-category');
                     }
 
                 }else{
@@ -102,6 +111,8 @@ class GoodsCategoryController extends Controller
     }
 
     public function actionDelete($id){
+        $redis = new Redis();
+        $redis->connect('127.0.0.1');
         $category = GoodsCategory::findOne(['id'=>$id]);
         if($category){
             //叶节点左右id相差1
@@ -111,8 +122,10 @@ class GoodsCategoryController extends Controller
                 //不为跟
                 if ($category->parent_id!=0){
                     $category->delete();
+                    $redis->delete('goods-category');
                 }else{
                     $category->deleteWithChildren();//该方法可以删除根节点
+                    $redis->delete('goods-category');
                 }
                 echo json_encode(1);
             }else{
