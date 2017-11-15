@@ -6,6 +6,7 @@ namespace frontend\controllers;
 
 use frontend\components\Sms;
 use frontend\models\Address;
+use frontend\models\Cart;
 use frontend\models\LoginForm;
 use frontend\models\Member;
 use yii\helpers\Url;
@@ -204,5 +205,45 @@ class MemberController extends Controller
         $address = Address::find()->where(['member_id'=>$model->member_id])->asArray()->all();
 //        var_dump($model);die;
         return $this->render('address',['address'=>$address,'model'=>$model]);
+    }
+
+    /**
+     * 购物车
+     * @return string
+     */
+    public function actionCart(){
+        $model = new Cart();
+        $request = \Yii::$app->request;
+        //接收表单提交的数据
+        $model->member_id = \Yii::$app->user->id;
+        if ($request->isPost){
+            //查询商品是否存在
+            $model->load($request->post(),"");
+            //查询当前登录用户所添加商品是否已在购物车
+            $old = Cart::find()->andWhere(['goods_id'=>$model->goods_id])->andWhere(['member_id'=>$model->member_id])->one();
+            //给用户id赋值
+            if ($model->validate()){
+                //验证通过保存数据
+                //判断该商品数量，新增商品添加，已有商品修改数量
+                if (!$old){
+                    $model->save();
+                }else{
+                    //已存有当前商品，修改商品数量
+                    $total = $old->amount + $model->amount;
+                    Cart::updateAll(['amount'=>$total],['id'=>$model->goods_id]);
+                }
+            }else{
+                var_dump($model->getErrors());exit;
+            }
+        }
+        //展示购物车内的所有商品
+        $goods = Cart::find()->where(['member_id'=>$model->member_id])->all();
+        return $this->render('cart',['goods'=>$goods]);
+    }
+
+    public function actionCartDel($id){
+        $goods = Cart::findOne(['id'=>$id]);
+        $goods->delete();
+        return $this->redirect(Url::to(['member/cart']));
     }
 }

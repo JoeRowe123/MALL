@@ -10,7 +10,8 @@ namespace frontend\controllers;
 
 
 use backend\models\ArticleCategory;
-use frontend\models\Goods;
+use backend\models\GoodsGallery;
+use backend\models\GoodsIntro;
 use frontend\models\GoodsCategory;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -27,6 +28,10 @@ class GoodsController extends Controller
         return $this->render('index',['article_category'=>$article]);
     }
 
+    /**
+     * 商品列表
+     * @return string
+     */
     public function actionShow(){
         $category_id  = \Yii::$app->request->get('category_id');
 //        var_dump($category_id);die;
@@ -45,6 +50,14 @@ class GoodsController extends Controller
         $pager->totalCount = $query->count();
         $pager->pageSize = 20;
         $models = $query->limit($pager->limit)->offset($pager->offset)->all();
-        return $this->render('goods',['goods'=>$models,'pager'=>$pager]);
+        return $this->render('list',['goods'=>$models,'pager'=>$pager]);
     }
+
+    public function actionGoods($id){
+        $goods = \backend\models\Goods::find()->andWhere(['id'=>$id])->andWhere(['status'=>1])->one();
+        $gallery = GoodsGallery::find()->where(['goods_id'=>$id])->all();
+        $goods_intro = GoodsIntro::findOne(['goods_id'=>$id]);
+        return $this->render('goods',['goods'=>$goods,'gallery'=>$gallery,'detail'=>$goods_intro]);
+    }
+
 }

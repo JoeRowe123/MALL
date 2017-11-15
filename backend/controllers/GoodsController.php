@@ -75,6 +75,7 @@ class GoodsController extends Controller
         if ($request->isPost){
             //接收提交的数据
             $model->load($request->post());
+            $model->status = 1;
             //获取商品详情保存到表中
             $intro->content = $model->intro;
             $model->create_time = time();
