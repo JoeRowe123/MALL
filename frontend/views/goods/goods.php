@@ -556,8 +556,8 @@
             <!-- 图片预览区域 start -->
             <div class="preview fl">
                 <div class="midpic">
-                    <a href="http://www.manage.com<?=$goods->logo?>" class="jqzoom" rel="gal1">   <!-- 第一幅图片的大图 class 和 rel属性不能更改 -->
-                        <img src="http://www.manage.com<?=$goods->logo?>" width="350px" alt="" />               <!-- 第一幅图片的中图 -->
+                    <a href="<?=Yii::$app->params['backend_domain'].$goods->logo?>" class="jqzoom" rel="gal1">   <!-- 第一幅图片的大图 class 和 rel属性不能更改 -->
+                        <img src="<?=Yii::$app->params['backend_domain'].$goods->logo?>" width="350px" alt="" />               <!-- 第一幅图片的中图 -->
                     </a>
                 </div>
                 <!--使用说明：此处的预览图效果有三种类型的图片，大图，中图，和小图，取得图片之后，分配到模板的时候，把第一幅图片分配到 上面的midpic 中，其中大图分配到 a 标签的href属性，中图分配到 img 的src上。 下面的smallpic 则表示小图区域，格式固定，在 a 标签的 rel属性中，分别指定了中图（smallimage）和大图（largeimage），img标签则显示小图，按此格式循环生成即可，但在第一个li上，要加上cur类，同时在第一个li 的a标签中，添加类 zoomThumbActive  -->

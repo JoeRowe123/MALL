@@ -697,7 +697,7 @@
                 <?php foreach ($goods as $v):?>
                 <li>
                     <dl>
-                        <dt><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v['id']])?>"><img src="http://www.manage.com<?=$v['logo']?>" alt="" /></a></dt>
+                        <dt><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v['id']])?>"><img src="<?=Yii::$app->params['backend_domain'].$v['logo']?>" alt="" /></a></dt>
                         <dd><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v['id']])?>"><?=$v['name']?></a></dt>
                         <dd><strong>￥<?=$v['shop_price']?></strong></dt>
                         <dd><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v['id']])?>"><em>已有10人评价</em></a></dt>

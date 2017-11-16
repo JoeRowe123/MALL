@@ -53,11 +53,15 @@ class GoodsController extends Controller
         return $this->render('list',['goods'=>$models,'pager'=>$pager]);
     }
 
+    /**
+     * 展示商品详情
+     * @param $id
+     * @return string
+     */
     public function actionGoods($id){
         $goods = \backend\models\Goods::find()->andWhere(['id'=>$id])->andWhere(['status'=>1])->one();
         $gallery = GoodsGallery::find()->where(['goods_id'=>$id])->all();
         $goods_intro = GoodsIntro::findOne(['goods_id'=>$id]);
         return $this->render('goods',['goods'=>$goods,'gallery'=>$gallery,'detail'=>$goods_intro]);
     }
-
 }

@@ -68,18 +68,18 @@
         </thead>
         <tbody>
         <?php $total = 0;foreach ($goods as $v):?>
-        <tr data-id="<?=$v->id?>">
-            <td class="col1"><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v->goods_id])?>"><img src="<?=Yii::$app->params['backend_domain'].$v->goods->logo?>" alt="" /></a>  <strong><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v->goods_id])?>"><?=$v->goods->name?></a></strong></td>
-            <td class="col3">￥<span><?=$v->goods->shop_price?></span></td>
-            <td class="col4">
-                <a href="javascript:;" class="reduce_num"></a>
-                <input type="text" name="amount" value="<?=$v->amount?>" class="amount"/>
-                <a href="javascript:;" class="add_num"></a>
-            </td>
-            <td class="col5">￥<span class=""><?=$v->goods->shop_price*$v->amount?>.00</span></td>
-            <td class="col6"><a href="javascript:;" class="delete">删除</a></td>
-        </tr>
-        <?php $total += $v->goods->shop_price*$v->amount;endforeach;?>
+            <tr data-id="<?=$v->id?>">
+                <td class="col1"><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v->id])?>"><img src="<?=Yii::$app->params['backend_domain'].$v->logo?>" alt="" /></a>  <strong><a href="<?=\yii\helpers\Url::to(['goods/goods','id'=>$v->id])?>"><?=$v->name?></a></strong></td>
+                <td class="col3">￥<span><?=$v->shop_price?></span></td>
+                <td class="col4">
+                    <a href="javascript:;" class="reduce_num"></a>
+                    <input type="text" name="amount" value="<?=$carts[$v->id]?>" class="amount"/>
+                    <a href="javascript:;" class="add_num"></a>
+                </td>
+                <td class="col5">￥<span class=""><?=$v->shop_price*$carts[$v->id]?>.00</span></td>
+                <td class="col6"><a href="javascript:;" class="delete">删除</a></td>
+            </tr>
+            <?php $total += $v->shop_price*$carts[$v->id];endforeach;?>
         </tbody>
         <tfoot>
         <tr>
@@ -89,7 +89,7 @@
     </table>
     <div class="cart_btn w990 bc mt10">
         <a href="<?=\yii\helpers\Url::to(['goods/index'])?>" class="continue">继续购物</a>
-        <a href="<?=\yii\helpers\Url::to(['member/order'])?>" class="checkout">结 算</a>
+        <a href="" class="checkout">结 算</a>
     </div>
 </div>
 <!-- 主体部分 end -->
@@ -124,15 +124,15 @@
 <script>
     $(function () {
         $("table").on('click','.add_num',function () {
-            $.post('<?=\yii\helpers\Url::to(['member/change-amount'])?>',{'amount':$(this).parent().find('.amount').val(),'id':$(this).closest('tr').attr('data-id')})
+            $.post('<?=\yii\helpers\Url::to(['member/change-amount','type'=>'change'])?>',{'amount':$(this).parent().find('.amount').val(),'id':$(this).closest('tr').attr('data-id')})
         });
         $("table").on('click','.reduce_num',function () {
-            $.post('<?=\yii\helpers\Url::to(['member/change-amount'])?>',{'amount':$(this).parent().find('.amount').val(),'id':$(this).closest('tr').attr('data-id')})
+            $.post('<?=\yii\helpers\Url::to(['member/change-amount','type'=>'change'])?>',{'amount':$(this).parent().find('.amount').val(),'id':$(this).closest('tr').attr('data-id')})
         });
         $("table").on('click','.delete',function () {
             if (confirm('删除商品？')){
                 var tr = $(this).closest('tr');
-                $.get('<?=\yii\helpers\Url::to(['member/cart-del'])?>',{'id':$(this).closest('tr').attr('data-id')},function (data) {
+                $.get('<?=\yii\helpers\Url::to(['member/change-amount','type'=>'del'])?>',{'goods_id':$(this).closest('tr').attr('data-id')},function (data) {
                     if(data=='success'){
                         tr.fadeOut();
                     }

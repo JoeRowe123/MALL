@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 
 
+use backend\models\Goods;
 use frontend\components\Sms;
 use frontend\models\Address;
 use frontend\models\Cart;
@@ -11,6 +12,7 @@ use frontend\models\LoginForm;
 use frontend\models\Member;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\Cookie;
 use yii\web\Request;
 
 class MemberController extends Controller
@@ -211,12 +213,96 @@ class MemberController extends Controller
      * 购物车
      * @return string
      */
+    //定义查询cookie中购物车的方法
+    private function getCart(){
+        $cookies = \Yii::$app->request->cookies;
+        $carts = $cookies->getValue('carts');
+        if ($carts){
+            $carts = unserialize($carts);
+        }else{
+            $carts = [];
+        }
+        return $carts;
+    }
+    //展示购物车里的商品
+    public function actionCartList(){
+        //访客模式
+        if (\Yii::$app->user->isGuest){
+            //查询cookie中的购物车里的数据
+            $carts = $this->getCart();
+            //获取购物车里的商品id
+            $ids = array_keys($carts);
+            //根据商品id查出相应商品信息
+            $goods = Goods::find()->where(['in','id',$ids])->all();
+            //展示购物车页面
+            return $this->render('g_cart',['carts'=>$carts,'goods'=>$goods]);
+        }
+        //登录模式
+        else{
+            //查询cookie购物车中商品
+            $carts = $this->getCart();
+            //将cookie购物车中的商品保存到数据库
+            foreach ($carts as $k=>$v){
+                $cart = Cart::find()->andWhere(['member_id'=>\Yii::$app->user->id])->andWhere(['goods_id'=>$k])->one();
+                if ($cart){
+                    //若该用户已有该商品则修改商品数量
+                    $total = $cart->amount + $v;
+                    Cart::updateAll(['amount'=>$total],['id'=>$cart->id]);
+                }
+                else{
+                    $model = new Cart();
+                    //若该用户还没有这个商品，则新增
+                    $model->member_id = \Yii::$app->user->id;
+                    $model->amount = $v;
+                    $model->goods_id = $k;
+                    if ($model->validate()){
+                        $model->save();
+                    }else{
+                        var_dump($model->getErrors());exit;
+                    }
+                }
+            }
+            //cookie中商品添加到数据库后删除cookie
+            $cookies = \Yii::$app->response->cookies;
+            $cookies->remove('carts');
+
+            //展示购物车内的所有商品
+            $goods = Cart::find()->where(['member_id'=>\Yii::$app->user->id])->all();
+            return $this->render('cart',['goods'=>$goods]);
+        }
+    }
+    //添加商品
     public function actionCart(){
-        $model = new Cart();
-        $request = \Yii::$app->request;
-        //接收表单提交的数据
-        $model->member_id = \Yii::$app->user->id;
-        if ($request->isPost){
+        //未登录状态
+        if (\Yii::$app->user->isGuest){
+            //查询cookie中购物车信息
+            $carts = $this->getCart();
+            //获取表传递的商品信息
+            $goods_id = \Yii::$app->request->post('goods_id');
+            $amount = \Yii::$app->request->post('amount');
+            //添加商品时，判断购物车中是否已存在该商品
+            if(array_key_exists($goods_id,$carts)){
+                //已存在则累计商品数量
+                $carts[$goods_id] += $amount;
+            }else{
+                //购物车中不存在则新增商品,商品保存类型以商品id做键，商品数量当值的关联数组。[11=>1] --- id为11的商品1件
+                $carts[$goods_id] = $amount;
+            }
+            //执行写操作的cookie
+            $cookies = \Yii::$app->response->cookies;
+            $cookie = new Cookie();
+            //将商品信息赋值给cookie对象的属性
+            $cookie->name = 'carts';
+            $cookie->value = serialize($carts);
+            //保存cookie
+            $cookies->add($cookie);
+            return $this->redirect(['cart-list']);
+        }
+        else{
+            $model = new Cart();
+            $request = \Yii::$app->request;
+            //接收表单提交的数据
+            $model->member_id = \Yii::$app->user->id;
             //查询商品是否存在
             $model->load($request->post(),"");
             //查询当前登录用户所添加商品是否已在购物车
@@ -230,20 +316,70 @@ class MemberController extends Controller
                 }else{
                     //已存有当前商品，修改商品数量
                     $total = $old->amount + $model->amount;
-                    Cart::updateAll(['amount'=>$total],['id'=>$model->goods_id]);
+                    Cart::updateAll(['amount'=>$total],['id'=>$old->id]);
                 }
             }else{
                 var_dump($model->getErrors());exit;
             }
+            return $this->redirect(['cart-list']);
         }
-        //展示购物车内的所有商品
-        $goods = Cart::find()->where(['member_id'=>$model->member_id])->all();
-        return $this->render('cart',['goods'=>$goods]);
     }
 
-    public function actionCartDel($id){
+    /**
+     * 修改购物车商品数量
+     */
+    public function actionChangeAmount(){
+        //获取修改的商品的id和数量
+        $id = \Yii::$app->request->post('id');
+        $amount = \Yii::$app->request->post('amount');
+        if (\Yii::$app->user->isGuest){
+            //访客模式，获取操作类型
+            $type = \Yii::$app->request->get('type');
+            switch ($type){
+                case 'change':
+                    //取出cookie中的购物车信息
+                    $carts = $this->getCart();
+                    //修改购物车商品数量
+                    $carts[$id] = $amount;
+                    //执行写操作的cookie
+                    $cookies = \Yii::$app->response->cookies;
+                    $cookie = new Cookie();
+                    //将商品信息赋值给cookie对象的属性
+                    $cookie->name = 'carts';
+                    $cookie->value = serialize($carts);
+                    //保存cookie
+                    $cookies->add($cookie);
+                    break;
+                case 'del':
+                    $goods_id = \Yii::$app->request->get('goods_id');
+                    $carts = $this->getCart();
+                    unset($carts[$goods_id]);
+                    $cookies = \Yii::$app->response->cookies;
+                    $cookie = new Cookie();
+                    //将商品信息赋值给cookie对象的属性
+                    $cookie->name = 'carts';
+                    $cookie->value = serialize($carts);
+                    //保存cookie
+                    $cookies->add($cookie);
+                    echo 'success';
+                    break;
+            }
+        }else{
+            //登录模式，修改数据库商品数量
+            Cart::updateAll(['amount'=>$amount],['id'=>$id]);
+        }
+    }
+
+    /**
+     * 删除购物车商品
+     * @param $id
+     * @return \yii\web\Response
+     */
+    public function actionCartDel(){
+        $id = \Yii::$app->request->get('id');
         $goods = Cart::findOne(['id'=>$id]);
         $goods->delete();
-        return $this->redirect(Url::to(['member/cart']));
+        echo 'success';
     }
+
 }
