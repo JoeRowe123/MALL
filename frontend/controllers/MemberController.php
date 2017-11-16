@@ -382,4 +382,7 @@ class MemberController extends Controller
         echo 'success';
     }
 
+    public function actionOrder(){
+        return $this->render('order');
+    }
 }

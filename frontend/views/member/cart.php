@@ -76,7 +76,7 @@
                 <input type="text" name="amount" value="<?=$v->amount?>" class="amount"/>
                 <a href="javascript:;" class="add_num"></a>
             </td>
-            <td class="col5">￥<span class=""><?=$v->goods->shop_price*$v->amount?>.00</span></td>
+            <td class="col5">￥<span class="sub"><?=$v->goods->shop_price*$v->amount?>.00</span></td>
             <td class="col6"><a href="javascript:;" class="delete">删除</a></td>
         </tr>
         <?php $total += $v->goods->shop_price*$v->amount;endforeach;?>
@@ -132,8 +132,18 @@
         $("table").on('click','.delete',function () {
             if (confirm('删除商品？')){
                 var tr = $(this).closest('tr');
+                //获取删除商品的小计金额
+                var del = tr.find('.sub').text();
                 $.get('<?=\yii\helpers\Url::to(['member/cart-del'])?>',{'id':$(this).closest('tr').attr('data-id')},function (data) {
                     if(data=='success'){
+                        //总计金额
+                        var total = 0;
+                        $(".sub").each(function(){
+                            total += parseFloat($(this).text());
+                        });
+                        //总金额减去删除商品金额
+                        total -= parseFloat(del);
+                        $("#total").text(total.toFixed(2));
                         tr.fadeOut();
                     }
                 })
