@@ -16,6 +16,10 @@ class Member extends ActiveRecord implements IdentityInterface
 {
     public $re_password;
     public $captcha;
+    //与商品建立关系
+    public function getGoods(){
+        return $this->hasOne(\backend\models\Goods::className(),['id'=>'goods_id']);
+    }
     public function rules(){
         return [
             [['username','password_hash','tel','email','re_password'],'required'],

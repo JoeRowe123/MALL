@@ -2,21 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>填写核对订单信息</title>
-    <link rel="stylesheet" href="/style/base.css" type="text/css">
-    <link rel="stylesheet" href="/style/global.css" type="text/css">
-    <link rel="stylesheet" href="/style/header.css" type="text/css">
-    <link rel="stylesheet" href="/style/fillin.css" type="text/css">
-    <link rel="stylesheet" href="/style/footer.css" type="text/css">
+    <title>订单页面</title>
+    <link rel="stylesheet" href="/css/base.css" type="text/css">
+    <link rel="stylesheet" href="/css/global.css" type="text/css">
+    <link rel="stylesheet" href="/css/header.css" type="text/css">
+    <link rel="stylesheet" href="/css/home.css" type="text/css">
+    <link rel="stylesheet" href="/css/order.css" type="text/css">
+    <link rel="stylesheet" href="/css/bottomnav.css" type="text/css">
+    <link rel="stylesheet" href="/css/footer.css" type="text/css">
 
     <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/cart2.js"></script>
-
+    <script type="text/javascript" src="/js/header.js"></script>
+    <script type="text/javascript" src="/js/home.js"></script>
 </head>
 <body>
 <!-- 顶部导航 start -->
 <div class="topnav">
-    <div class="topnav_bd w990 bc">
+    <div class="topnav_bd w1210 bc">
         <div class="topnav_left">
 
         </div>
@@ -36,215 +38,551 @@
 
 <div style="clear:both;"></div>
 
-<!-- 页面头部 start -->
-<div class="header w990 bc mt15">
-    <div class="logo w990">
-        <h2 class="fl"><a href="index.html"><img src="/images/logo.png" alt="京西商城"></a></h2>
-        <div class="flow fr flow2">
-            <ul>
-                <li>1.我的购物车</li>
-                <li class="cur">2.填写核对订单信息</li>
-                <li>3.成功提交订单</li>
+<!-- 头部 start -->
+<div class="header w1210 bc mt15">
+    <!-- 头部上半部分 start 包括 logo、搜索、用户中心和购物车结算 -->
+    <div class="logo w1210">
+        <h1 class="fl"><a href="index.html"><img src="/images/logo.png" alt="京西商城"></a></h1>
+        <!-- 头部搜索 start -->
+        <div class="search fl">
+            <div class="search_form">
+                <div class="form_left fl"></div>
+                <form action="" name="serarch" method="get" class="fl">
+                    <input type="text" class="txt" value="请输入商品关键字" /><input type="submit" class="btn" value="搜索" />
+                </form>
+                <div class="form_right fl"></div>
+            </div>
+
+            <div style="clear:both;"></div>
+
+            <div class="hot_search">
+                <strong>热门搜索:</strong>
+                <a href="">D-Link无线路由</a>
+                <a href="">休闲男鞋</a>
+                <a href="">TCL空调</a>
+                <a href="">耐克篮球鞋</a>
+            </div>
+        </div>
+        <!-- 头部搜索 end -->
+
+        <!-- 用户中心 start-->
+        <div class="user fl">
+            <dl>
+                <dt>
+                    <em></em>
+                    <a href="">用户中心</a>
+                    <b></b>
+                </dt>
+                <dd>
+                    <div class="prompt">
+                        您好，请<a href="">登录</a>
+                    </div>
+                    <div class="uclist mt10">
+                        <ul class="list1 fl">
+                            <li><a href="">用户信息></a></li>
+                            <li><a href="">我的订单></a></li>
+                            <li><a href="">收货地址></a></li>
+                            <li><a href="">我的收藏></a></li>
+                        </ul>
+
+                        <ul class="fl">
+                            <li><a href="">我的留言></a></li>
+                            <li><a href="">我的红包></a></li>
+                            <li><a href="">我的评论></a></li>
+                            <li><a href="">资金管理></a></li>
+                        </ul>
+
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div class="viewlist mt10">
+                        <h3>最近浏览的商品：</h3>
+                        <ul>
+                            <li><a href=""><img src="/images/view_list1.jpg" alt="" /></a></li>
+                            <li><a href=""><img src="/images/view_list2.jpg" alt="" /></a></li>
+                            <li><a href=""><img src="/images/view_list3.jpg" alt="" /></a></li>
+                        </ul>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <!-- 用户中心 end-->
+
+        <!-- 购物车 start -->
+        <div class="cart fl">
+            <dl>
+                <dt>
+                    <a href="<?=\yii\helpers\Url::to(['member/cart-list'])?>">去购物车结算</a>
+                    <b></b>
+                </dt>
+                <dd>
+                    <div class="prompt">
+                        购物车中还没有商品，赶紧选购吧！
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <!-- 购物车 end -->
+    </div>
+    <!-- 头部上半部分 end -->
+
+    <div style="clear:both;"></div>
+
+    <!-- 导航条部分 start -->
+    <div class="nav w1210 bc mt10">
+        <!--  商品分类部分 start-->
+        <div class="category fl cat1"> <!-- 非首页，需要添加cat1类 -->
+            <div class="cat_hd">  <!-- 注意，首页在此div上只需要添加cat_hd类，非首页，默认收缩分类时添加上off类，鼠标滑过时展开菜单则将off类换成on类 -->
+                <h2>全部商品分类</h2>
+                <em></em>
+            </div>
+
+            <div class="cat_bd none">
+
+                <div class="cat item1">
+                    <h3><a href="">图像、音像、数字商品</a> <b></b></h3>
+                    <div class="cat_detail">
+                        <dl class="dl_1st">
+                            <dt><a href="">电子书</a></dt>
+                            <dd>
+                                <a href="">免费</a>
+                                <a href="">小说</a>
+                                <a href="">励志与成功</a>
+                                <a href="">婚恋/两性</a>
+                                <a href="">文学</a>
+                                <a href="">经管</a>
+                                <a href="">畅读VIP</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">数字音乐</a></dt>
+                            <dd>
+                                <a href="">通俗流行</a>
+                                <a href="">古典音乐</a>
+                                <a href="">摇滚说唱</a>
+                                <a href="">爵士蓝调</a>
+                                <a href="">乡村民谣</a>
+                                <a href="">有声读物</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">音像</a></dt>
+                            <dd>
+                                <a href="">音乐</a>
+                                <a href="">影视</a>
+                                <a href="">教育音像</a>
+                                <a href="">游戏</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">文艺</a></dt>
+                            <dd>
+                                <a href="">小说</a>
+                                <a href="">文学</a>
+                                <a href="">青春文学</a>
+                                <a href="">传纪</a>
+                                <a href="">艺术</a>
+                                <a href="">经管</a>
+                                <a href="">畅读VIP</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">人文社科</a></dt>
+                            <dd>
+                                <a href="">历史</a>
+                                <a href="">心理学</a>
+                                <a href="">政治/军事</a>
+                                <a href="">国学/古籍</a>
+                                <a href="">哲学/宗教</a>
+                                <a href="">社会科学</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">经管励志</a></dt>
+                            <dd>
+                                <a href="">经济</a>
+                                <a href="">金融与投资</a>
+                                <a href="">管理</a>
+                                <a href="">励志与成功</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">人文社科</a></dt>
+                            <dd>
+                                <a href="">历史</a>
+                                <a href="">心理学</a>
+                                <a href="">政治/军事</a>
+                                <a href="">国学/古籍</a>
+                                <a href="">哲学/宗教</a>
+                                <a href="">社会科学</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">生活</a></dt>
+                            <dd>
+                                <a href="">烹饪/美食</a>
+                                <a href="">时尚/美妆</a>
+                                <a href="">家居</a>
+                                <a href="">娱乐/休闲</a>
+                                <a href="">动漫/幽默</a>
+                                <a href="">体育/运动</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">科技</a></dt>
+                            <dd>
+                                <a href="">科普</a>
+                                <a href="">建筑</a>
+                                <a href="">IT</a>
+                                <a href="">医学</a>
+                                <a href="">工业技术</a>
+                                <a href="">电子/通信</a>
+                                <a href="">农林</a>
+                                <a href="">科学与自然</a>
+                            </dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">家用电器</a><b></b></h3>
+                    <div class="cat_detail">
+                        <dl class="dl_1st">
+                            <dt><a href="">大家电</a></dt>
+                            <dd>
+                                <a href="">平板电视</a>
+                                <a href="">空调</a>
+                                <a href="">冰箱</a>
+                                <a href="">洗衣机</a>
+                                <a href="">热水器</a>
+                                <a href="">DVD</a>
+                                <a href="">烟机/灶具</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">生活电器</a></dt>
+                            <dd>
+                                <a href="">取暖器</a>
+                                <a href="">加湿器</a>
+                                <a href="">净化器</a>
+                                <a href="">饮水机</a>
+                                <a href="">净水设备</a>
+                                <a href="">吸尘器</a>
+                                <a href="">电风扇</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">厨房电器</a></dt>
+                            <dd>
+                                <a href="">电饭煲</a>
+                                <a href="">豆浆机</a>
+                                <a href="">面包机</a>
+                                <a href="">咖啡机</a>
+                                <a href="">微波炉</a>
+                                <a href="">电磁炉</a>
+                                <a href="">电水壶</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">个护健康</a></dt>
+                            <dd>
+                                <a href="">剃须刀</a>
+                                <a href="">电吹风</a>
+                                <a href="">按摩器</a>
+                                <a href="">足浴盆</a>
+                                <a href="">血压计</a>
+                                <a href="">体温计</a>
+                                <a href="">血糖仪</a>
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="">五金家装</a></dt>
+                            <dd>
+                                <a href="">灯具</a>
+                                <a href="">LED灯</a>
+                                <a href="">水槽</a>
+                                <a href="">龙头</a>
+                                <a href="">门铃</a>
+                                <a href="">电器开关</a>
+                                <a href="">插座</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">手机、数码</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">电脑、办公</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">家局、家具、家装、厨具</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">服饰鞋帽</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">个护化妆</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">礼品箱包、钟表、珠宝</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">运动健康</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">汽车用品</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">母婴、玩具乐器</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">食品饮料、保健食品</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+                <div class="cat">
+                    <h3><a href="">彩票、旅行、充值、票务</a><b></b></h3>
+                    <div class="cat_detail none">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--  商品分类部分 end-->
+
+        <div class="navitems fl">
+            <ul class="fl">
+                <li class="current"><a href="">首页</a></li>
+                <li><a href="">电脑频道</a></li>
+                <li><a href="">家用电器</a></li>
+                <li><a href="">品牌大全</a></li>
+                <li><a href="">团购</a></li>
+                <li><a href="">积分商城</a></li>
+                <li><a href="">夺宝奇兵</a></li>
             </ul>
+            <div class="right_corner fl"></div>
         </div>
     </div>
+    <!-- 导航条部分 end -->
 </div>
-<!-- 页面头部 end -->
+<!-- 头部 end-->
 
 <div style="clear:both;"></div>
 
-<!-- 主体部分 start -->
-<div class="fillin w990 bc mt15">
-    <div class="fillin_hd">
-        <h2>填写并核对订单信息</h2>
+<!-- 页面主体 start -->
+<div class="main w1210 bc mt10">
+    <div class="crumb w1210">
+        <h2><strong>我的XX </strong><span>> 我的订单</span></h2>
     </div>
 
-    <div class="fillin_bd">
-        <!-- 收货人信息  start-->
-        <div class="address">
-            <h3>收货人信息</h3>
-            <div class="address_info">
-                <p>
-                    <input type="radio" value="1" name="address_id"/>张三  17002810530  北京市 昌平区 一号楼大街 </p>
-                <input type="radio" value="1" name="address_id"/>李四  17002810530  四川省 成都市 高新区 和平街 </p>
-            </div>
+    <!-- 左侧导航菜单 start -->
+    <div class="menu fl">
+        <h3>我的XX</h3>
+        <div class="menu_wrap">
+            <dl>
+                <dt>订单中心 <b></b></dt>
+                <dd class="cur"><b>.</b><a href="">我的订单</a></dd>
+                <dd><b>.</b><a href="">我的关注</a></dd>
+                <dd><b>.</b><a href="">浏览历史</a></dd>
+                <dd><b>.</b><a href="">我的团购</a></dd>
+            </dl>
 
+            <dl>
+                <dt>账户中心 <b></b></dt>
+                <dd><b>.</b><a href="">账户信息</a></dd>
+                <dd><b>.</b><a href="">账户余额</a></dd>
+                <dd><b>.</b><a href="">消费记录</a></dd>
+                <dd><b>.</b><a href="">我的积分</a></dd>
+                <dd><b>.</b><a href="">收货地址</a></dd>
+            </dl>
 
+            <dl>
+                <dt>订单中心 <b></b></dt>
+                <dd><b>.</b><a href="">返修/退换货</a></dd>
+                <dd><b>.</b><a href="">取消订单记录</a></dd>
+                <dd><b>.</b><a href="">我的投诉</a></dd>
+            </dl>
         </div>
-        <!-- 收货人信息  end-->
+    </div>
+    <!-- 左侧导航菜单 end -->
 
-        <!-- 配送方式 start -->
-        <div class="delivery">
-            <h3>送货方式 </h3>
+    <!-- 右侧内容区域 start -->
+    <div class="content fl ml10">
+        <div class="order_hd">
+            <h3>我的订单</h3>
+            <dl>
+                <dt>便利提醒：</dt>
+                <dd>待付款（0）</dd>
+                <dd>待确认收货（0）</dd>
+                <dd>待自提（0）</dd>
+            </dl>
 
-
-            <div class="delivery_select">
-                <table>
-                    <thead>
-                    <tr>
-                        <th class="col1">送货方式</th>
-                        <th class="col2">运费</th>
-                        <th class="col3">运费标准</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="cur">
-                        <td>
-                            <input type="radio" name="delivery" checked="checked" />普通快递送货上门
-
-                        </td>
-                        <td>￥10.00</td>
-                        <td>每张订单不满499.00元,运费15.00元, 订单4...</td>
-                    </tr>
-                    <tr>
-
-                        <td><input type="radio" name="delivery" />特快专递</td>
-                        <td>￥40.00</td>
-                        <td>每张订单不满499.00元,运费40.00元, 订单4...</td>
-                    </tr>
-                    <tr>
-
-                        <td><input type="radio" name="delivery" />加急快递送货上门</td>
-                        <td>￥40.00</td>
-                        <td>每张订单不满499.00元,运费40.00元, 订单4...</td>
-                    </tr>
-                    <tr>
-
-                        <td><input type="radio" name="delivery" />平邮</td>
-                        <td>￥10.00</td>
-                        <td>每张订单不满499.00元,运费15.00元, 订单4...</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
+            <dl>
+                <dt>特色服务：</dt>
+                <dd><a href="">我的预约</a></dd>
+                <dd><a href="">夺宝箱</a></dd>
+            </dl>
         </div>
-        <!-- 配送方式 end -->
 
-        <!-- 支付方式  start-->
-        <div class="pay">
-            <h3>支付方式 </h3>
-
-
-            <div class="pay_select">
-                <table>
-                    <tr class="cur">
-                        <td class="col1"><input type="radio" name="pay" />货到付款</td>
-                        <td class="col2">送货上门后再收款，支持现金、POS机刷卡、支票支付</td>
-                    </tr>
-                    <tr>
-                        <td class="col1"><input type="radio" name="pay" />在线支付</td>
-                        <td class="col2">即时到帐，支持绝大数银行借记卡及部分银行信用卡</td>
-                    </tr>
-                    <tr>
-                        <td class="col1"><input type="radio" name="pay" />上门自提</td>
-                        <td class="col2">自提时付款，支持现金、POS刷卡、支票支付</td>
-                    </tr>
-                    <tr>
-                        <td class="col1"><input type="radio" name="pay" />邮局汇款</td>
-                        <td class="col2">通过快钱平台收款 汇款后1-3个工作日到账</td>
-                    </tr>
-                </table>
-
-            </div>
-        </div>
-        <!-- 支付方式  end-->
-
-        <!-- 发票信息 start-->
-        <div class="receipt none">
-            <h3>发票信息 </h3>
-
-
-            <div class="receipt_select ">
-                <form action="">
-                    <ul>
-                        <li>
-                            <label for="">发票抬头：</label>
-                            <input type="radio" name="type" checked="checked" class="personal" />个人
-                            <input type="radio" name="type" class="company"/>单位
-                            <input type="text" class="txt company_input" disabled="disabled" />
-                        </li>
-                        <li>
-                            <label for="">发票内容：</label>
-                            <input type="radio" name="content" checked="checked" />明细
-                            <input type="radio" name="content" />办公用品
-                            <input type="radio" name="content" />体育休闲
-                            <input type="radio" name="content" />耗材
-                        </li>
-                    </ul>
-                </form>
-
-            </div>
-        </div>
-        <!-- 发票信息 end-->
-
-        <!-- 商品清单 start -->
-        <div class="goods">
-            <h3>商品清单</h3>
-            <table>
+        <div class="order_bd mt10">
+            <table class="orders">
                 <thead>
                 <tr>
-                    <th class="col1">商品</th>
-                    <th class="col3">价格</th>
-                    <th class="col4">数量</th>
-                    <th class="col5">小计</th>
+                    <th width="10%">订单号</th>
+                    <th width="20%">订单商品</th>
+                    <th width="10%">收货人</th>
+                    <th width="20%">订单金额</th>
+                    <th width="20%">下单时间</th>
+                    <th width="10%">订单状态</th>
+                    <th width="10%">操作</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php foreach ($orders as $order):?>
                 <tr>
-                    <td class="col1"><a href=""><img src="/images/cart_goods1.jpg" alt="" /></a>  <strong><a href="">【1111购物狂欢节】惠JackJones杰克琼斯纯羊毛菱形格</a></strong></td>
-                    <td class="col3">￥499.00</td>
-                    <td class="col4"> 1</td>
-                    <td class="col5"><span>￥499.00</span></td>
-                </tr>
-                <tr>
-                    <td class="col1"><a href=""><img src="/images/cart_goods2.jpg" alt="" /></a> <strong><a href="">九牧王王正品新款时尚休闲中长款茄克EK01357200</a></strong></td>
-                    <td class="col3">￥1102.00</td>
-                    <td class="col4">1</td>
-                    <td class="col5"><span>￥1102.00</span></td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="5">
-                        <ul>
-                            <li>
-                                <span>4 件商品，总商品金额：</span>
-                                <em>￥5316.00</em>
-                            </li>
-                            <li>
-                                <span>返现：</span>
-                                <em>-￥240.00</em>
-                            </li>
-                            <li>
-                                <span>运费：</span>
-                                <em>￥10.00</em>
-                            </li>
-                            <li>
-                                <span>应付总额：</span>
-                                <em>￥5076.00</em>
-                            </li>
-                        </ul>
+                    <td><a href=""><?=$order->id?></a></td>
+                    <td>
+                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']:''?>" alt="" /></a>
+                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?Yii::$app->params['backend_domain'].$logo[$order->id][1]['logo']:''?>" alt="" /></a>
+                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?Yii::$app->params['backend_domain'].$logo[$order->id][2]['logo']:''?>" alt="" /></a>
                     </td>
+                    <td><?=$order->name?></td>
+                    <td>￥<?=$order->total?>.00 <?=$order->payment_name?></td>
+                    <td><?=date('Y-m-d H:i:s',$order->create_time)?></td>
+                    <td><?=$order->status==1?'已完成':'已取消'?></td>
+                    <td><a href="">查看</a> | <a href="">删除</a></td>
                 </tr>
-                </tfoot>
+                <?php endforeach;?>
+                </tbody>
             </table>
         </div>
-        <!-- 商品清单 end -->
+    </div>
+    <!-- 右侧内容区域 end -->
+</div>
+<!-- 页面主体 end-->
 
+<div style="clear:both;"></div>
+
+<!-- 底部导航 start -->
+<div class="bottomnav w1210 bc mt10">
+    <div class="bnav1">
+        <h3><b></b> <em>购物指南</em></h3>
+        <ul>
+            <li><a href="">购物流程</a></li>
+            <li><a href="">会员介绍</a></li>
+            <li><a href="">团购/机票/充值/点卡</a></li>
+            <li><a href="">常见问题</a></li>
+            <li><a href="">大家电</a></li>
+            <li><a href="">联系客服</a></li>
+        </ul>
     </div>
 
-    <div class="fillin_ft">
-        <a href=""><span>提交订单</span></a>
-        <p>应付总额：<strong>￥5076.00元</strong></p>
+    <div class="bnav2">
+        <h3><b></b> <em>配送方式</em></h3>
+        <ul>
+            <li><a href="">上门自提</a></li>
+            <li><a href="">快速运输</a></li>
+            <li><a href="">特快专递（EMS）</a></li>
+            <li><a href="">如何送礼</a></li>
+            <li><a href="">海外购物</a></li>
+        </ul>
+    </div>
 
+
+    <div class="bnav3">
+        <h3><b></b> <em>支付方式</em></h3>
+        <ul>
+            <li><a href="">货到付款</a></li>
+            <li><a href="">在线支付</a></li>
+            <li><a href="">分期付款</a></li>
+            <li><a href="">邮局汇款</a></li>
+            <li><a href="">公司转账</a></li>
+        </ul>
+    </div>
+
+    <div class="bnav4">
+        <h3><b></b> <em>售后服务</em></h3>
+        <ul>
+            <li><a href="">退换货政策</a></li>
+            <li><a href="">退换货流程</a></li>
+            <li><a href="">价格保护</a></li>
+            <li><a href="">退款说明</a></li>
+            <li><a href="">返修/退换货</a></li>
+            <li><a href="">退款申请</a></li>
+        </ul>
+    </div>
+
+    <div class="bnav5">
+        <h3><b></b> <em>特色服务</em></h3>
+        <ul>
+            <li><a href="">夺宝岛</a></li>
+            <li><a href="">DIY装机</a></li>
+            <li><a href="">延保服务</a></li>
+            <li><a href="">家电下乡</a></li>
+            <li><a href="">京东礼品卡</a></li>
+            <li><a href="">能效补贴</a></li>
+        </ul>
     </div>
 </div>
-<!-- 主体部分 end -->
+<!-- 底部导航 end -->
 
 <div style="clear:both;"></div>
 <!-- 底部版权 start -->
-<div class="footer w1210 bc mt15">
+<div class="footer w1210 bc mt10">
     <p class="links">
         <a href="">关于我们</a> |
         <a href="">联系我们</a> |
@@ -271,4 +609,3 @@
 <!-- 底部版权 end -->
 </body>
 </html>
-

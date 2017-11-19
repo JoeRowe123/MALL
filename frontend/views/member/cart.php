@@ -89,8 +89,8 @@
     </table>
     <div class="cart_btn w990 bc mt10">
         <a href="<?=\yii\helpers\Url::to(['goods/index'])?>" class="continue">继续购物</a>
-        <a href="<?=\yii\helpers\Url::to(['member/order'])?>" class="checkout">结 算</a>
-    </div>
+        <a href="<?=\yii\helpers\Url::to(['member/settlement'])?>" class="checkout">结 算</a>
+    </div>Settlement
 </div>
 <!-- 主体部分 end -->
 
