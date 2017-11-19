@@ -42,7 +42,7 @@
 <div class="header w1210 bc mt15">
     <!-- 头部上半部分 start 包括 logo、搜索、用户中心和购物车结算 -->
     <div class="logo w1210">
-        <h1 class="fl"><a href="index.html"><img src="/images/logo.png" alt="京西商城"></a></h1>
+        <h1 class="fl"><a href="<?=\yii\helpers\Url::to(['goods/index'])?>"><img src="/images/logo.png" alt="京西商城"></a></h1>
         <!-- 头部搜索 start -->
         <div class="search fl">
             <div class="search_form">
@@ -496,9 +496,9 @@
                 <tr>
                     <td><a href=""><?=$order->id?></a></td>
                     <td>
-                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']:''?>" alt="" /></a>
-                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?Yii::$app->params['backend_domain'].$logo[$order->id][1]['logo']:''?>" alt="" /></a>
-                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?Yii::$app->params['backend_domain'].$logo[$order->id][2]['logo']:''?>" alt="" /></a>
+                        <a href=""><img src="<?=Yii::$app->params['backend_domain'].$logo[$order->id][0]['logo']?>" alt="" /></a>
+                        <a href=""><img src="<?=$i=isset($logo[$order->id][1])?Yii::$app->params['backend_domain'].$logo[$order->id][1]['logo']:''?>" alt="" /></a>
+                        <a href=""><img src="<?=$i=isset($logo[$order->id][2])?Yii::$app->params['backend_domain'].$logo[$order->id][2]['logo']:''?>" alt="" /></a>
                     </td>
                     <td><?=$order->name?></td>
                     <td>￥<?=$order->total?>.00 <?=$order->payment_name?></td>

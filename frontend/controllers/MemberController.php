@@ -211,7 +211,6 @@ class MemberController extends Controller
 //        var_dump($model);die;
         return $this->render('address',['address'=>$address,'model'=>$model]);
     }
-
     /**
      * 购物车
      * @return string
@@ -233,6 +232,7 @@ class MemberController extends Controller
         if (\Yii::$app->user->isGuest){
             //查询cookie中的购物车里的数据
             $carts = $this->getCart();
+//            var_dump($carts);die;
             //获取购物车里的商品id
             $ids = array_keys($carts);
             //根据商品id查出相应商品信息
@@ -297,7 +297,7 @@ class MemberController extends Controller
             //将商品信息赋值给cookie对象的属性
             $cookie->name = 'carts';
             $cookie->value = serialize($carts);
-            $cookie->expire = 3600*24*7;
+            $cookie->expire = time()+3600*24*7;
             //保存cookie
             $cookies->add($cookie);
             return $this->redirect(['cart-list']);
@@ -439,7 +439,7 @@ class MemberController extends Controller
                     $carts = Cart::findAll(['member_id'=>$model->member_id]);
                     //计算商品总金额
                     foreach ($carts as $cart){
-                        if ($cart->amount>$cart->goods->stock){
+                        if ($cart->amount > $cart->goods->stock){
                             throw new Exception($cart->goods->name,'商品不足');
                         }
                         $order_goods = new OrderGoods();
@@ -455,7 +455,8 @@ class MemberController extends Controller
                         //总金额
                         $model->total += $cart->amount*$cart->goods->shop_price;
                         //修改商品库存
-                        Goods::updateAll(['stock'=>-$cart->amount],['id'=>$cart->goods_id]);
+                        $stock = $cart->goods->stock - $cart->amount;
+                        Goods::updateAll(['stock'=>$stock],['id'=>$cart->goods_id]);
                         //商品提交订单完成删除购物车商品
                         $cart->delete();
                     }
@@ -466,8 +467,9 @@ class MemberController extends Controller
             }catch (Exception $e){
                 //出错回滚
                 $transaction->rollBack();
+//                var_dump($e);exit;
                 //跳转回购物车
-                return $this->render('goods');
+                return $this->redirect(['cart-list']);
             }
             return $this->redirect(['notice']);
 
