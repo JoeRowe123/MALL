@@ -9,7 +9,7 @@
 namespace backend\controllers;
 
 use backend\models\GoodsCategory;
-use Codeception\Module\Redis;
+
 use creocoder\nestedsets\NestedSetsBehavior;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -40,7 +40,7 @@ class GoodsCategoryController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionAddCategory(){
-        $redis = new Redis();
+        $redis = new \Redis();
         $redis->connect('127.0.0.1');
         $model = new GoodsCategory();
         //设置默认parent_id,不设置分类无法显示（修改表单需要父节点id）
@@ -111,7 +111,7 @@ class GoodsCategoryController extends Controller
     }
 
     public function actionDelete($id){
-        $redis = new Redis();
+        $redis = new \Redis();
         $redis->connect('127.0.0.1');
         $category = GoodsCategory::findOne(['id'=>$id]);
         if($category){

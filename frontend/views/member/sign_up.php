@@ -4,10 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>用户注册</title>
     <link rel="stylesheet" href="/css/base.css" type="text/css">
-    <link rel="stylesheet" hre="/css/global.css" type="text/css">
-    <link rel="stylesheet" href=f"/css/header.css" type="text/css">
+    <link rel="stylesheet" href="/css/global.css" type="text/css">
+    <link rel="stylesheet" href="/css/header.css" type="text/css">
     <link rel="stylesheet" href="/css/login.css" type="text/css">
-    <link rel="stylesheet" href="/css/footer.css" type="text/*">
+    <link rel="stylesheet" href="/css/footer.css" type="text/css">
         <style>
         .error{
             color: red;
