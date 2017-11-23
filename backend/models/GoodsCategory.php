@@ -90,12 +90,12 @@ class GoodsCategory extends ActiveRecord
                 $categories2 = $category->children(1)->all();
                 foreach ($categories2 as $k2=>$category2){
                     $html .= '<dl '.($k2==0?'class="dl_1st"':'').'>
-                            <dt><a href='.Url::to(['goods/show','category_id'=>$category['id']]).'>'.$category2->name.'</a></dt>
+                            <dt><a href='.Url::to(['goods/show','category_id'=>$category2['id']]).'>'.$category2->name.'</a></dt>
                             <dd>';
                     //遍历该二级分类的三级分类
                     $categories3 = $category2->children(1)->all();
                     foreach ($categories3 as $category3){
-                        $html .= '<a href='.Url::to(['goods/show','category_id'=>$category['id']]).'>'.$category3->name.'</a>';
+                        $html .= '<a href='.Url::to(['goods/show','category_id'=>$category3['id']]).'>'.$category3->name.'</a>';
                     }
                     $html .= '</dd>
                         </dl>';

@@ -23,16 +23,7 @@
         </div>
         <div class="topnav_right fr">
             <ul>
-                <?php
-                    if (Yii::$app->user->isGuest){
-                        $username = '<a href='.\yii\helpers\Url::to(['member/login']).'>请登录</a>';
-                        echo '<li>您好，欢迎来到京西！[<a href="'.\yii\helpers\Url::to(['member/login']).'">登录</a>] [<a href="'.\yii\helpers\Url::to(['member/sign-up']).'">免费注册</a>] </li>';
-                    }else{
-                        $username = Yii::$app->user->identity->username;
-                        echo " <li>您好，欢迎".$username."来到京西！[<a href=".\yii\helpers\Url::to(['member/logout']).">退出</a>]</li>";
-                    }
-                ?>
-                <li class="line">|</li>
+                <li>您好，欢迎来到京西！[<a href="/member/login.html">登录</a>] [<a href="/member/sign-up.html">免费注册</a>] </li>                <li class="line">|</li>
                 <li>我的订单</li>
                 <li class="line">|</li>
                 <li>客户服务</li>
@@ -54,7 +45,7 @@
         <div class="search fl">
             <div class="search_form">
                 <div class="form_left fl"></div>
-                <form action="<?=\yii\helpers\Url::to(['goods/search'])?>" name="serarch" method="get" class="fl">
+                <form action="/goods/search.html" name="serarch" method="get" class="fl">
                     <input type="text" class="txt" name="keywords" value="请输入商品关键字" /><input type="submit" class="btn" value="搜索" />
                 </form>
                 <div class="form_right fl"></div>
@@ -82,13 +73,12 @@
                 </dt>
                 <dd>
                     <div class="prompt">
-                        您好，<?=$username?>
-                    </div>
+                        您好，<a href=/member/login.html>请登录</a>                    </div>
                     <div class="uclist mt10">
                         <ul class="list1 fl">
                             <li><a href="">用户信息></a></li>
                             <li><a href="">我的订单></a></li>
-                            <li><a href="<?=\yii\helpers\Url::to(['member/address'])?>">收货地址></a></li>
+                            <li><a href="/member/address.html">收货地址></a></li>
                             <li><a href="">我的收藏></a></li>
                         </ul>
 
@@ -118,7 +108,7 @@
         <div class="cart fl">
             <dl>
                 <dt>
-                    <a href="<?=\yii\helpers\Url::to(['member/cart-list'])?>">去购物车结算</a>
+                    <a href="/member/cart-list.html">去购物车结算</a>
                     <b></b>
                 </dt>
                 <dd>
@@ -143,8 +133,91 @@
                 <em></em>
             </div>
 
-            <?=\backend\models\GoodsCategory::getIndexGoodsCategory()?>
-
+            <div class="cat_bd"><div class="cat item1">
+                    <h3><a href=/goods/show.html?category_id=1>家用电器</a><b></b></h3>
+                    <div class="cat_detail"><dl class="dl_1st">
+                            <dt><a href=/goods/show.html?category_id=78>洗衣机</a></dt>
+                            <dd><a href=/goods/show.html?category_id=111>迷你洗衣机</a><a href=/goods/show.html?category_id=110>波轮洗衣机</a><a href=/goods/show.html?category_id=109>滚筒洗衣机</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=14>冰箱</a></dt>
+                            <dd><a href=/goods/show.html?category_id=108>冷柜</a><a href=/goods/show.html?category_id=107>酒柜</a><a href=/goods/show.html?category_id=106>对开门</a><a href=/goods/show.html?category_id=105>多门</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=12>空调</a></dt>
+                            <dd><a href=/goods/show.html?category_id=104>壁挂式空调</a><a href=/goods/show.html?category_id=103>中央空调</a><a href=/goods/show.html?category_id=102>柜式空调</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=3>电视</a></dt>
+                            <dd><a href=/goods/show.html?category_id=101>OLED电视</a><a href=/goods/show.html?category_id=100>超清电视</a><a href=/goods/show.html?category_id=99>超薄电视</a><a href=/goods/show.html?category_id=98>曲面电视</a></dd>
+                        </dl></div>
+                </div><div class="cat ">
+                    <h3><a href=/goods/show.html?category_id=5>手机及数码</a><b></b></h3>
+                    <div class="cat_detail"><dl class="dl_1st">
+                            <dt><a href=/goods/show.html?category_id=18>电子教育</a></dt>
+                            <dd><a href=/goods/show.html?category_id=129>电子词典</a><a href=/goods/show.html?category_id=128>复读机</a><a href=/goods/show.html?category_id=127>点读笔</a><a href=/goods/show.html?category_id=126>学生平板</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=17>智能设配</a></dt>
+                            <dd><a href=/goods/show.html?category_id=125>智能机器人</a><a href=/goods/show.html?category_id=124>智能手表</a><a href=/goods/show.html?category_id=123>智能手环</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=16>数码配件</a></dt>
+                            <dd><a href=/goods/show.html?category_id=122>滤镜</a><a href=/goods/show.html?category_id=121>相机包</a><a href=/goods/show.html?category_id=120>三脚架</a><a href=/goods/show.html?category_id=119>存储卡</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=15>摄影摄像</a></dt>
+                            <dd><a href=/goods/show.html?category_id=118>拍立得</a><a href=/goods/show.html?category_id=117>单反相机</a><a href=/goods/show.html?category_id=116>微单相机</a><a href=/goods/show.html?category_id=115>数码相机</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=13>手机通讯</a></dt>
+                            <dd><a href=/goods/show.html?category_id=114>手机维修</a><a href=/goods/show.html?category_id=113>对讲机</a><a href=/goods/show.html?category_id=112>手机</a></dd>
+                        </dl></div>
+                </div><div class="cat ">
+                    <h3><a href=/goods/show.html?category_id=9>电脑</a><b></b></h3>
+                    <div class="cat_detail"><dl class="dl_1st">
+                            <dt><a href=/goods/show.html?category_id=23>网络产品</a></dt>
+                            <dd><a href=/goods/show.html?category_id=97>网卡</a><a href=/goods/show.html?category_id=96>机顶盒</a><a href=/goods/show.html?category_id=95>路由器</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=22>游戏设备</a></dt>
+                            <dd><a href=/goods/show.html?category_id=94>手柄</a><a href=/goods/show.html?category_id=93>游戏机</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=21>外设产品</a></dt>
+                            <dd><a href=/goods/show.html?category_id=92>移动硬盘</a><a href=/goods/show.html?category_id=91>手写板</a><a href=/goods/show.html?category_id=90>摄像头</a><a href=/goods/show.html?category_id=89>键盘</a><a href=/goods/show.html?category_id=88>鼠标</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=20>电脑配件</a></dt>
+                            <dd><a href=/goods/show.html?category_id=87>硬盘</a><a href=/goods/show.html?category_id=86>显卡</a><a href=/goods/show.html?category_id=85>主板</a><a href=/goods/show.html?category_id=84>CPU</a><a href=/goods/show.html?category_id=83>显示器</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=19>电脑整机</a></dt>
+                            <dd><a href=/goods/show.html?category_id=82>台式机</a><a href=/goods/show.html?category_id=81>平板电脑</a><a href=/goods/show.html?category_id=80>游戏本</a><a href=/goods/show.html?category_id=79>笔记本</a></dd>
+                        </dl></div>
+                </div><div class="cat ">
+                    <h3><a href=/goods/show.html?category_id=10>家居</a><b></b></h3>
+                    <div class="cat_detail"><dl class="dl_1st">
+                            <dt><a href=/goods/show.html?category_id=27>家装软饰</a></dt>
+                            <dd><a href=/goods/show.html?category_id=77>创意家居</a><a href=/goods/show.html?category_id=76>墙贴</a><a href=/goods/show.html?category_id=75>手工十字绣</a><a href=/goods/show.html?category_id=74>装饰摆件</a><a href=/goods/show.html?category_id=73>装饰字画</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=26>生活日用</a></dt>
+                            <dd><a href=/goods/show.html?category_id=72>缝纫</a><a href=/goods/show.html?category_id=71>清洁工具</a><a href=/goods/show.html?category_id=70>浴室用品</a><a href=/goods/show.html?category_id=69>雨伞雨具</a><a href=/goods/show.html?category_id=68>收纳用品</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=25>家纺</a></dt>
+                            <dd><a href=/goods/show.html?category_id=67>毯子</a><a href=/goods/show.html?category_id=66>地毯</a><a href=/goods/show.html?category_id=65>毛巾浴巾</a><a href=/goods/show.html?category_id=64>电热毯</a><a href=/goods/show.html?category_id=63>床品套件</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=24>厨具</a></dt>
+                            <dd><a href=/goods/show.html?category_id=62>餐具</a><a href=/goods/show.html?category_id=61>厨房配件</a><a href=/goods/show.html?category_id=60>刀剪菜板</a><a href=/goods/show.html?category_id=59>保温杯</a><a href=/goods/show.html?category_id=58>锅具</a></dd>
+                        </dl></div>
+                </div><div class="cat ">
+                    <h3><a href=/goods/show.html?category_id=11>美妆个护</a><b></b></h3>
+                    <div class="cat_detail"><dl class="dl_1st">
+                            <dt><a href=/goods/show.html?category_id=32>香水彩妆</a></dt>
+                            <dd><a href=/goods/show.html?category_id=57>睫毛膏</a><a href=/goods/show.html?category_id=56>眉笔</a><a href=/goods/show.html?category_id=55>香水</a><a href=/goods/show.html?category_id=54>化妆棉</a><a href=/goods/show.html?category_id=53>BB霜</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=31>口腔护理</a></dt>
+                            <dd><a href=/goods/show.html?category_id=49>牙粉</a><a href=/goods/show.html?category_id=52>套装</a><a href=/goods/show.html?category_id=51>漱口水</a><a href=/goods/show.html?category_id=50>牙刷/牙线</a><a href=/goods/show.html?category_id=48>牙膏</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=30>身体护理</a></dt>
+                            <dd><a href=/goods/show.html?category_id=45>润肤</a><a href=/goods/show.html?category_id=47>手足</a><a href=/goods/show.html?category_id=46>精油</a><a href=/goods/show.html?category_id=44>淋浴</a><a href=/goods/show.html?category_id=43>补水保湿</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=29>洗发护发</a></dt>
+                            <dd><a href=/goods/show.html?category_id=42>假发</a><a href=/goods/show.html?category_id=41>造型</a><a href=/goods/show.html?category_id=40>染发</a><a href=/goods/show.html?category_id=39>护发</a><a href=/goods/show.html?category_id=38>洗发</a></dd>
+                        </dl><dl >
+                            <dt><a href=/goods/show.html?category_id=28>面部护肤</a></dt>
+                            <dd><a href=/goods/show.html?category_id=37>精华</a><a href=/goods/show.html?category_id=36>爽肤水</a><a href=/goods/show.html?category_id=35>洁面</a><a href=/goods/show.html?category_id=34>卸妆</a><a href=/goods/show.html?category_id=33>补水保湿</a></dd>
+                        </dl></div>
+                </div></div>
         </div>
         <!--  商品分类部分 end-->
 
@@ -625,17 +698,19 @@
 
 <!-- 底部导航 start -->
 <div class="bottomnav w1210 bc mt10">
-    <?php foreach ($article_category as $category):?>
-    <div class="bnav1">
-        <h3><b></b> <em><?=$category['name']?></em></h3>
+        <div class="bnav1">
+        <h3><b></b> <em>财经</em></h3>
         <ul>
-            <?php foreach (\frontend\models\Article::getArticle($category['id']) as $title):?>
-            <li><a href=""><?=$title['name']?></a></li>
-            <?php endforeach;?>
-        </ul>
+                    </ul>
     </div>
-    <?php endforeach;?>
-</div>
+        <div class="bnav1">
+        <h3><b></b> <em>体育</em></h3>
+        <ul>
+                        <li><a href="">勇士141-113快船</a></li>
+                        <li><a href="">费城115-107火箭</a></li>
+                    </ul>
+    </div>
+    </div>
 <!-- 底部导航 end -->
 
 <div style="clear:both;"></div>

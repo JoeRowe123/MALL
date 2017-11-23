@@ -11,6 +11,7 @@ namespace backend\controllers;
 
 use backend\models\Article;
 use backend\models\ArticleDetail;
+use frontend\filters\RbacFilter;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\Request;
@@ -108,5 +109,14 @@ class ArticleController extends Controller
         }else{
             echo json_encode('删除失败');
         }
+    }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+//                'only'=>['Add'],
+//                'except'=>[]
+            ]
+        ];
     }
 }

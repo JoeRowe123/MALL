@@ -222,7 +222,7 @@ class UserController extends Controller
         return [
             'rbac'=>[
                 'class'=>RbacFilter::className(),
-                'only'=>['updatePwd'],
+//                'only'=>['updatePwd'],
                 'except'=>[
                     'list','login'
                 ]

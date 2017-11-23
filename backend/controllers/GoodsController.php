@@ -235,4 +235,11 @@ class GoodsController extends Controller
             ]
         ];
     }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
+    }
 }

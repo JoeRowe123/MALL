@@ -153,7 +153,7 @@ class AuthController extends Controller
         //获取所有权限并展示在角色表单中
         $permissions = $auth->getPermissions();
         $permissions = ArrayHelper::map($permissions,'name','description');
-        return $this->render('add_Role',['model'=>$model,'permissions'=>$permissions]);
+        return $this->render('add_role',['model'=>$model,'permissions'=>$permissions]);
     }
     /**
      * 修改角色
@@ -207,5 +207,12 @@ class AuthController extends Controller
         }else{
             echo '该角色不存在，或已被删除！';
         }
+    }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
     }
 }

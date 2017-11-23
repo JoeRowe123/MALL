@@ -175,5 +175,11 @@ class BrandController extends Controller
     }
     //远端访问（七牛云）方式
     //  oyy6mn13p.bkt.clouddn.com(域名)+/59ff22f0d2c51.jpg(key)
-
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
+    }
 }

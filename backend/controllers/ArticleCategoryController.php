@@ -67,4 +67,11 @@ class ArticleCategoryController extends Controller
             echo json_encode('删除失败');
         }
     }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
+    }
 }

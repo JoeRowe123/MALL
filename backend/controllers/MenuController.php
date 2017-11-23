@@ -85,4 +85,11 @@ class MenuController extends Controller
             echo '菜单不存在，或已经被删除';
         }
     }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
+    }
 }

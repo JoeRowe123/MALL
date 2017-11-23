@@ -16,4 +16,5 @@ class Article extends ActiveRecord
     public static function getArticle($article_id){
         return self::find()->where(['article_category_id'=>$article_id])->asArray()->all();
     }
+
 }

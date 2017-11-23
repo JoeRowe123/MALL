@@ -48,7 +48,7 @@ class User extends ActiveRecord implements IdentityInterface
 //                var_dump($child);die;
                 //根据权限将二级菜单放入一级菜单中
                 if (\Yii::$app->user->can($child->url)){
-                    $items[] = ['label'=>$child->name,'url'=>$child->url.'.html'];
+                    $items[] = ['label'=>$child->name,'url'=>'/'.$child->url.'.html'];
                 }
             }
             $menuItem = ['label'=>$menu->name,'items'=>$items];

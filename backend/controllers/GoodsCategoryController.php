@@ -77,7 +77,7 @@ class GoodsCategoryController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionEdit($id){
-        $redis = new Redis();
+        $redis = new \Redis();
         $redis->connect('127.0.0.1');
         $model = GoodsCategory::findOne(['id'=>$id]);
         $request = \Yii::$app->request;
@@ -134,5 +134,12 @@ class GoodsCategoryController extends Controller
         }else{
             return '记录不存在，或已被删除！';
         }
+    }
+    public function behaviors(){
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+            ]
+        ];
     }
 }

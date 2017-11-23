@@ -34,8 +34,8 @@ class MemberController extends Controller
             if ($model->validate()){
                 //验证用户信息及密码是否正确
                 if ($model->login()){
-                    //验证通过，跳转列表页
-                    return $this->redirect(Url::to(['goods/index']));
+                    //验证通过，跳转静态商城首页
+                    return $this->redirect(\Yii::$app->params['frontend_domain'].'/index.html');
                 }
             }else{
                 var_dump($model->getErrors());exit;
@@ -80,7 +80,22 @@ class MemberController extends Controller
      */
     public function actionSms(){
         $tel = $_POST['tel'];
-        $code = rand(100000,999999);
+        $redis = new \Redis();
+        $redis->connect("127.0.0.1");
+        //判断是否已有改号码保存的验证码
+        $code = $redis->get('code_'.$tel);
+        /*
+         * ======短信防刷======
+         */
+        if($code){
+            //redis中有验证码   则判断是否过了5分钟
+            $interval = 60*5 - $redis->ttl('code_'.$tel) ;
+            if ($interval < 60){
+                 echo '请勿频繁操作'; exit;
+            }
+        }else {
+            $code = rand(100000, 999999);
+        }
         $response = Sms::sendSms(
             "夏天安静了", // 短信签名
             "SMS_109365465", // 短信模板编号
@@ -90,11 +105,9 @@ class MemberController extends Controller
             )
         );
         if ($response->Code == 'OK'){
-            //将验证码存入session
-            $session = \Yii::$app->session;
-            $session->open();
-            //根据手机号保存验证码
-            $session->set('code_'.$tel,$code);
+            //将验证码存入redis
+            //根据手机号保存验证码,5分钟过期
+            $redis->set('code_'.$tel,$code,60*5);
             return "success";
         }else{
             return 'failed';
@@ -108,7 +121,9 @@ class MemberController extends Controller
      * @return string
      */
     public function actionCheckCaptcha($tel,$captcha){
-        $code = \Yii::$app->session->get('code_'.$tel);
+        $redis = new \Redis();
+        $redis->connect("127.0.0.1");
+        $code = $redis->get('code_'.$tel);
 //        var_dump($code);die;
         if ($code == $captcha){
             return 'true';
